@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Employee, EmployeeRole } from '@/types/employee';
-import { SelectInput } from '@/components/SelectInput';
-import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
-import { useState } from 'react';
-import Spinner from '@/components/Spinner';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Employee, EmployeeRole } from "@/types/employee";
+import { SelectInput } from "@/components/SelectInput";
+import { toast } from "sonner";
+import { useState } from "react";
+import Spinner from "@/components/Spinner";
+import OptionalBadge from "@/components/OptionalBadge";
 
 interface EmployeeFormProps {
   initialData?: Employee | null;
@@ -20,39 +20,39 @@ interface EmployeeFormProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(3, { message: 'O nome é obrigatório.' }),
-  documentId: z.string().length(11, { message: 'O CPF deve ter 11 dígitos.' }),
-  phone: z.string().min(10, { message: 'Telefone inválido.' }),
+  name: z.string().min(3, { message: "O nome é obrigatório." }),
+  documentId: z.string().length(11, { message: "O CPF deve ter 11 dígitos." }),
+  phone: z.string().min(10, { message: "Telefone inválido." }),
   address: z.string().optional(),
-  zipCode: z.string().max(9, { message: 'CEP inválido.' }).optional(),
+  zipCode: z.string().max(9, { message: "CEP inválido." }).optional(),
   salary: z
     .transform(Number)
     .pipe(
       z
-        .number('O salário é obrigatório.')
-        .min(0, { message: 'O salário deve ser um número positivo.' })
-        .max(10000, { message: 'Salário inválido' }),
+        .number("O salário é obrigatório.")
+        .min(0, { message: "O salário deve ser um número positivo." })
+        .max(10000, { message: "Salário inválido" })
     ),
-  role: z.string('O cargo é obrigatório.').min(1, { message: 'O cargo é obrigatório.' }),
+  role: z.string("O cargo é obrigatório.").min(1, { message: "O cargo é obrigatório." }),
 });
 
 export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      name: '',
-      documentId: '',
-      phone: '',
-      address: '',
+      name: "",
+      documentId: "",
+      phone: "",
+      address: "",
       salary: 0,
-      zipCode: '',
+      zipCode: "",
     },
   });
 
   const [isFetchingZipCode, setIsFetchingZipCode] = useState(false);
 
   const handleCepBlur = async (cep: string) => {
-    const cleanedCep = cep.replace(/\D/g, '');
+    const cleanedCep = cep.replace(/\D/g, "");
 
     if (cleanedCep.length !== 8) {
       return;
@@ -62,15 +62,15 @@ export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormP
     try {
       const response = await fetch(`https://brasilapi.com.br/api/cep/v1/${cleanedCep}`);
       if (!response.ok) {
-        toast.error('CEP não encontrado');
+        toast.error("CEP não encontrado");
         return;
       }
       const data = await response.json();
       const address = `${data.street}, ${data.neighborhood} - ${data.city}, ${data.state}`;
-      form.setValue('address', address);
+      form.setValue("address", address);
     } catch (error) {
-      toast.error('Falha ao buscar CEP');
-      form.setError('zipCode', { message: 'Não encontrado.' });
+      toast.error("Falha ao buscar CEP");
+      form.setError("zipCode", { message: "Não encontrado." });
     } finally {
       setIsFetchingZipCode(false);
     }
@@ -175,9 +175,7 @@ export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormP
                   <FormItem>
                     <FormLabel>
                       CEP
-                      <Badge variant="outline" className="text-xm">
-                        Opcional
-                      </Badge>
+                      <OptionalBadge />
                     </FormLabel>
                     <FormControl>
                       <div className="focus-within:ring-secondary/100 flex items-center rounded-md border-2 bg-white pr-4 shadow-xs focus-within:ring-[1px]">
@@ -205,9 +203,7 @@ export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormP
                 <FormItem>
                   <FormLabel>
                     Endereço
-                    <Badge variant="outline" className="text-xm">
-                      Opcional
-                    </Badge>
+                    <OptionalBadge />
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="Endereço" {...field} />
@@ -220,7 +216,7 @@ export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormP
         </div>
 
         <Button type="submit" disabled={isPending} className="mt-2 w-full">
-          {isPending ? 'Salvando...' : 'Salvar'}
+          {isPending ? "Salvando..." : "Salvar"}
         </Button>
       </form>
     </Form>

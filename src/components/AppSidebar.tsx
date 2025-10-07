@@ -78,7 +78,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="text-lg font-semibold text-white">Reco.app</SidebarGroupLabel>
           <Separator className="bg-white/20" />
-          <SidebarGroupContent className="mt-2">
+          <SidebarGroupContent className="mt-4">
             <SidebarMenu>
               {items.map((item) => {
                 const isActive = pathname.startsWith(item.url);
@@ -87,7 +87,7 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <Link
                         href={item.url}
-                        className={cn("font-semibold text-white hover:bg-white/10 hover:text-white", isActive && "bg-white/20")}
+                        className={cn("font-semibold text-white hover:bg-white/10 h-10 hover:text-white py-4", isActive && "bg-white/20")}
                       >
                         <item.icon />
                         <span>{item.title}</span>

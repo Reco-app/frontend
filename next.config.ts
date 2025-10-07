@@ -41,6 +41,14 @@ const nextConfig: NextConfig = {
         source: "/clientes/:id",
         destination: "/customers/:id",
       },
+      {
+        source: "/veiculos",
+        destination: "/vehicles",
+      },
+      {
+        source: "/veiculos/:id",
+        destination: "/vehicles/:id",
+      },
     ];
   },
   eslint: {
