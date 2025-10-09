@@ -1,3 +1,5 @@
+import { Vehicle } from "./vehicle";
+
 export type Customer = {
   id: string;
   name: string;

@@ -4,8 +4,6 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useQuery } from "@tanstack/react-query";
-
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -17,13 +15,12 @@ import { useFipeCars } from "@/hooks/use-fipe-cars";
 import OptionalBadge from "@/components/OptionalBadge";
 
 const formSchema = z.object({
-  plate: z.string().min(7, { message: "A placa deve ter 7 caracteres." }).max(7),
+  plate: z.string().min(7, { message: "A placa deve ter pelo menos 7 caracteres." }).max(8),
   carBrand: z.string("Selecione uma marca."),
   carModel: z.string("Selecione um modelo."),
   year: z
-    .number()
-    .min(1950, "Ano inválido.")
-    .max(new Date().getFullYear() + 1, "Ano inválido.")
+    .transform(Number)
+    .pipe(z.number("Ano inválido.").min(1950, { message: "Ano inválido" }))
     .optional(),
   color: z.string().optional(),
   ownerId: z.string("Selecione um cliente."),
@@ -38,7 +35,14 @@ interface VehicleFormProps {
 export function VehicleForm({ initialData, onSubmit, isPending }: VehicleFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || undefined,
+    defaultValues: initialData || {
+      plate: "",
+      carBrand: "",
+      carModel: "",
+      year: 0,
+      color: "",
+      ownerId: "",
+    },
   });
 
   const { customers, isLoading: isLoadingCustomers } = useCustomer();
@@ -67,7 +71,7 @@ export function VehicleForm({ initialData, onSubmit, isPending }: VehicleFormPro
   }, [watchedBrand, form]);
 
   if (isLoadingCustomers || isLoadingCars) {
-    return <Spinner message="Carregando dados..." />;
+    return <Spinner />;
   }
 
   return (
