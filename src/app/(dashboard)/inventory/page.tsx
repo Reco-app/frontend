@@ -33,7 +33,7 @@ export default function InventoryPage() {
         <div className="flex items-center gap-2">
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="bg-card shadow-none h-10 border-primary/20">
+              <Button variant="outline" className="bg-card shadow-none h-10">
                 <ArrowUpDown className="mr-2 h-4 w-4" />
                 Registrar entrada/saída
               </Button>
@@ -61,9 +61,6 @@ export default function InventoryPage() {
               <span className="font-semibold mr-1">{lowStockSummary.count}</span>peça(s) estão com o estoque abaixo do mínimo.
             </p>
           </div>
-          {/* <AlertCircle className="h-4 w-4" /> */}
-          {/* <AlertTitle>Alerta de Estoque Baixo</AlertTitle> */}
-          {/* <AlertDescription>{lowStockSummary.count} peça(s) está(ão) com estoque abaixo do mínimo.</AlertDescription> */}
         </div>
       )}
 

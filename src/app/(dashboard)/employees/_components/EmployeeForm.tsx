@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import Spinner from "@/components/Spinner";
 import OptionalBadge from "@/components/OptionalBadge";
+import { isPositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 
 interface EmployeeFormProps {
   initialData?: Employee | null;
@@ -20,7 +21,7 @@ interface EmployeeFormProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(3, { message: "O nome é obrigatório." }),
+  name: z.string().min(3, { message: isRequiredFieldMessage }),
   documentId: z.string().length(11, { message: "O CPF deve ter 11 dígitos." }),
   phone: z.string().min(10, { message: "Telefone inválido." }),
   address: z.string().optional(),
@@ -28,12 +29,9 @@ const formSchema = z.object({
   salary: z
     .transform(Number)
     .pipe(
-      z
-        .number("O salário é obrigatório.")
-        .min(0, { message: "O salário deve ser um número positivo." })
-        .max(10000, { message: "Salário inválido" })
+      z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage }).max(10000, { message: "Salário inválido" })
     ),
-  role: z.string("O cargo é obrigatório.").min(1, { message: "O cargo é obrigatório." }),
+  role: z.string(isRequiredFieldMessage),
 });
 
 export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormProps) {
@@ -216,7 +214,7 @@ export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormP
         </div>
 
         <Button type="submit" disabled={isPending} className="mt-2 w-full">
-          {isPending ? "Salvando..." : "Salvar"}
+          {isPending ? <Spinner /> : "Salvar"}
         </Button>
       </form>
     </Form>

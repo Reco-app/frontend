@@ -78,12 +78,7 @@ export function VehiclesTable() {
         deleteMutation={deleteMutation}
       />
 
-      <Button
-        variant="ghost"
-        className="text-primary bg-background hover:text-secondary"
-        onClick={() => seedMutation.mutate()}
-        disabled={seedMutation.isPending}
-      >
+      <Button variant="outline" className="text-primary bg-white" onClick={() => seedMutation.mutate()} disabled={seedMutation.isPending}>
         {seedMutation.isPending ? (
           <>
             <RefreshCw className="mr-2 h-4 w-4 animate-spin" />

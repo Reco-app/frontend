@@ -1,3 +1,4 @@
+import { ServiceOrder } from "./service-order";
 import { Vehicle } from "./vehicle";
 
 export type Customer = {
@@ -8,5 +9,6 @@ export type Customer = {
   email?: string;
   address?: string;
   vehicles?: Vehicle[];
+  serviceOrders: ServiceOrder[];
   updatedAt?: string | Date;
 };

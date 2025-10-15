@@ -44,13 +44,13 @@ export function SelectInput({
           aria-expanded={open}
           disabled={disabled}
           className={cn(
-            "w-full justify-between bg-white hover:cursor-pointer hover:bg-white h-10",
-            "focus-visible:border-secondary focus-visible:ring-secondary/50",
+            "w-full justify-between bg-white hover:cursor-pointer hover:bg-white h-10 overflow-x-scroll ",
+            "focus-visible:ring-secondary/70 focus-visible:ring-2",
             "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
             !value && "text-foreground"
           )}
         >
-          <span className={`${value ? "text-foreground" : "text-muted-foreground"} font-normal`}>
+          <span className={`${value ? "text-foreground" : "text-muted-foreground"} font-normal pr-2`}>
             {value ? selectedLabel : placeholder}
           </span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

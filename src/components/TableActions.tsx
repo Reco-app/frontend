@@ -5,7 +5,7 @@ import { Separator } from "./ui/separator";
 
 interface TableActionsProps {
   onEdit: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
   onViewDetails?: () => void;
   children?: React.ReactNode;
 }
@@ -28,10 +28,12 @@ export default function TableActions({ onEdit, onDelete, onViewDetails, children
         <DropdownMenuItem onClick={onEdit} className="hover:bg-accent hover:cursor-pointer">
           <SquarePen /> Editar
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-red-600 hover:cursor-pointer hover:bg-red-500/20 hover:text-red-600" onClick={onDelete}>
-          <Trash className="text-red-500" />
-          Excluir
-        </DropdownMenuItem>
+        {onDelete && (
+          <DropdownMenuItem className="text-red-600 hover:cursor-pointer hover:bg-red-500/20 hover:text-red-600" onClick={onDelete}>
+            <Trash className="text-red-500" />
+            Excluir
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -46,9 +46,11 @@ interface DataTableProps<TData> {
     isPending: boolean;
     onSubmit: (values: any) => void;
   }>;
+  onCreate?: () => void;
+  onEdit?: (data: TData) => void;
   createMutation: { mutate: (data: any, options?: any) => void; isPending: boolean };
   updateMutation: { mutate: (data: any, options?: any) => void; isPending: boolean };
-  deleteMutation: { mutate: (id: string, options?: any) => void; isPending: boolean };
+  deleteMutation?: { mutate: (id: string, options?: any) => void; isPending: boolean };
 }
 
 export function DataTable<TData>({
@@ -63,6 +65,8 @@ export function DataTable<TData>({
   createMutation,
   updateMutation,
   deleteMutation,
+  onCreate,
+  onEdit,
 }: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -81,20 +85,28 @@ export function DataTable<TData>({
         id: "actions",
         cell: ({ row }) => (
           <TableActions
-            onEdit={() => {
-              setSelectedData(row.original);
-              setIsEditDialogOpen(true);
-            }}
-            onDelete={() => {
-              setSelectedData(row.original);
-              setIsDeleteDialogOpen(true);
-            }}
+            onEdit={
+              onEdit
+                ? () => onEdit(row.original)
+                : () => {
+                    setSelectedData(row.original);
+                    setIsEditDialogOpen(true);
+                  }
+            }
+            onDelete={
+              deleteMutation
+                ? () => {
+                    setSelectedData(row.original);
+                    setIsDeleteDialogOpen(true);
+                  }
+                : undefined
+            }
             onViewDetails={viewDetailsRoute ? () => router.push(`${viewDetailsRoute}/${(row.original as any).id}`) : undefined}
           />
         ),
       },
     ],
-    [columns, viewDetailsRoute, router]
+    [columns, viewDetailsRoute, router, onEdit]
   );
 
   const table = useReactTable({
@@ -136,7 +148,7 @@ export function DataTable<TData>({
           onChange={(event) => table.getColumn(filterColumnId)?.setFilterValue(event.target.value)}
           className="max-w-sm bg-white"
         />
-        <Button onClick={() => setIsCreateDialogOpen(true)}>
+        <Button onClick={onCreate ? onCreate : () => setIsCreateDialogOpen(true)}>
           <Plus strokeWidth={3} className="mr-2 h-4 w-4" /> {createText}
         </Button>
       </div>
@@ -234,24 +246,26 @@ export function DataTable<TData>({
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Você tem certeza absoluta?</AlertDialogTitle>
-            <AlertDialogDescription>Essa ação não pode ser desfeita. Isso irá remover o registro permanentemente.</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive hover:bg-destructive/90"
-              onClick={() => deleteMutation.mutate((selectedData as any)?.id, { onSuccess: () => setIsDeleteDialogOpen(false) })}
-            >
-              Sim, excluir
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {deleteMutation && (
+        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <AlertDialogOverlay />
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Você tem certeza absoluta?</AlertDialogTitle>
+              <AlertDialogDescription>Essa ação não pode ser desfeita. Isso irá remover o registro permanentemente.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive hover:bg-destructive/90"
+                onClick={() => deleteMutation.mutate((selectedData as any)?.id, { onSuccess: () => setIsDeleteDialogOpen(false) })}
+              >
+                Sim, excluir
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   );
 }

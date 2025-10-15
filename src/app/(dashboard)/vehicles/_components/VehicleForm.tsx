@@ -13,6 +13,7 @@ import { SelectInput } from "@/components/SelectInput";
 import { useCustomer } from "@/hooks/use-customers";
 import { useFipeCars } from "@/hooks/use-fipe-cars";
 import OptionalBadge from "@/components/OptionalBadge";
+import { invalidDateMessage } from "@/lib/schemaMessages";
 
 const formSchema = z.object({
   plate: z.string().min(7, { message: "A placa deve ter pelo menos 7 caracteres." }).max(8),
@@ -20,7 +21,7 @@ const formSchema = z.object({
   carModel: z.string("Selecione um modelo."),
   year: z
     .transform(Number)
-    .pipe(z.number("Ano inválido.").min(1950, { message: "Ano inválido" }))
+    .pipe(z.number("Ano inválido.").min(1950, { message: invalidDateMessage }))
     .optional(),
   color: z.string().optional(),
   ownerId: z.string("Selecione um cliente."),
@@ -39,7 +40,7 @@ export function VehicleForm({ initialData, onSubmit, isPending }: VehicleFormPro
       plate: "",
       carBrand: "",
       carModel: "",
-      year: 0,
+      year: new Date().getFullYear(),
       color: "",
       ownerId: "",
     },
@@ -191,7 +192,7 @@ export function VehicleForm({ initialData, onSubmit, isPending }: VehicleFormPro
         </div>
 
         <Button type="submit" disabled={isPending} className="w-full">
-          {isPending ? "Salvando..." : "Salvar Veículo"}
+          {isPending ? <Spinner /> : "Salvar Veículo"}
         </Button>
       </form>
     </Form>

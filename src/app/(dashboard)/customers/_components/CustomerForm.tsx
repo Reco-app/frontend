@@ -10,8 +10,8 @@ import { Customer } from "@/types/customer";
 import { useState } from "react";
 import { toast } from "sonner";
 import Spinner from "@/components/Spinner";
-import { Badge } from "@/components/ui/badge";
 import OptionalBadge from "@/components/OptionalBadge";
+import { isRequiredFieldMessage } from "@/lib/schemaMessages";
 
 interface CustomerFormProps {
   initialData?: Customer | null;
@@ -20,7 +20,7 @@ interface CustomerFormProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(3, { message: "O nome é obrigatório." }),
+  name: z.string().min(3, { message: isRequiredFieldMessage }),
   documentId: z.string().min(11, { message: "CPF/CNPJ inválido." }).max(14).optional(),
   phone: z.string().min(10, { message: "Telefone inválido." }),
   email: z.email({ message: "Email inválido." }).optional().or(z.literal("")),
@@ -88,7 +88,7 @@ export function CustomerForm({ initialData, onSubmit, isPending }: CustomerFormP
             </FormItem>
           )}
         />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 items-baseline">
           <FormField
             control={form.control}
             name="documentId"
@@ -186,7 +186,7 @@ export function CustomerForm({ initialData, onSubmit, isPending }: CustomerFormP
         </div>
 
         <Button type="submit" disabled={isPending} className="mt-2 w-full">
-          {isPending ? "Salvando..." : "Salvar"}
+          {isPending ? <Spinner /> : "Salvar"}
         </Button>
       </form>
     </Form>

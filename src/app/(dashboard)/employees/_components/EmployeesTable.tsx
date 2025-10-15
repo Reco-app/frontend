@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Employee } from "@/types/employee";
+import { Employee, EmployeeRole } from "@/types/employee";
 import { EmployeeForm } from "./EmployeeForm";
 import { formatCurrency } from "@/lib/formatters";
 import { DataTable } from "@/components/DataTable";
@@ -11,7 +11,14 @@ const columns: ColumnDef<Employee>[] = [
   { accessorKey: "name", header: "Nome Completo" },
   { accessorKey: "documentId", header: "CPF", enableSorting: false },
   { accessorKey: "phone", header: "Telefone", enableSorting: false },
-  { accessorKey: "role", header: "Cargo" },
+  {
+    accessorKey: "role",
+    header: "Cargo",
+    cell: ({ row }) => {
+      const roleKey = row.getValue("role") as keyof typeof EmployeeRole;
+      return EmployeeRole[roleKey];
+    },
+  },
   {
     accessorKey: "salary",
     header: "Salário",

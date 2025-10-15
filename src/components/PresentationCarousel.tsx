@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
-import Image, { StaticImageData } from 'next/image';
+import React, { useState, useEffect } from "react";
+import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Image, { StaticImageData } from "next/image";
 
-import stats from '../../public/stats.svg';
-import box from '../../public/box.svg';
-import finance from '../../public/finance.svg';
-import dashboard from '../../public/dashboard.svg';
-import serviceOrder from '../../public/service-order.svg';
-import employee from '../../public/employee.svg';
+import stats from "../../public/stats.svg";
+import box from "../../public/box.svg";
+import finance from "../../public/finance.svg";
+import serviceOrder from "../../public/service-order.svg";
+import employee from "../../public/employee.svg";
 
 interface PresentationCarouselItemProps {
   image: StaticImageData | string;
@@ -38,28 +30,28 @@ export function PresentationCarousel() {
   const items = [
     {
       image: serviceOrder,
-      title: 'Serviços',
-      description: 'Gerencie ordens de serviço do início ao fim com mais organização e agilidade.',
+      title: "Serviços",
+      description: "Gerencie ordens de serviço do início ao fim com mais organização e agilidade.",
     },
     {
       image: stats,
-      title: 'Estatísticas',
-      description: 'Visualize relatórios detalhados e acompanhe o desempenho da oficina em tempo real.',
+      title: "Estatísticas",
+      description: "Visualize relatórios detalhados e acompanhe o desempenho da oficina em tempo real.",
     },
     {
       image: box,
-      title: 'Estoque',
-      description: 'Controle peças e materiais com precisão, evitando perdas e falta de insumos.',
+      title: "Estoque",
+      description: "Controle peças e materiais com precisão, evitando perdas e falta de insumos.",
     },
     {
       image: employee,
-      title: 'Pessoas',
-      description: 'Centralize informações de clientes e organize sua equipe em um só lugar.',
+      title: "Pessoas",
+      description: "Centralize informações de clientes e organize sua equipe em um só lugar.",
     },
     {
       image: finance,
-      title: 'Financeiro',
-      description: 'Monitore receitas, despesas e mantenha as finanças sempre sob controle.',
+      title: "Financeiro",
+      description: "Monitore receitas, despesas e mantenha as finanças sempre sob controle.",
     },
   ];
 
@@ -77,10 +69,10 @@ export function PresentationCarousel() {
       setActiveIndex(api.selectedScrollSnap());
     };
 
-    api.on('select', handleSelect);
+    api.on("select", handleSelect);
 
     return () => {
-      api.off('select', handleSelect);
+      api.off("select", handleSelect);
     };
   }, [api]);
 
@@ -114,9 +106,7 @@ export function PresentationCarousel() {
         {items.map((_, index) => (
           <span
             key={index}
-            className={`h-1 w-1 rounded-full transition-all duration-300 ${
-              activeIndex === index ? 'w-2 bg-white' : 'bg-white/50'
-            }`}
+            className={`h-1 w-1 rounded-full transition-all duration-300 ${activeIndex === index ? "w-2 bg-white" : "bg-white/50"}`}
           />
         ))}
       </div>

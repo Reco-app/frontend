@@ -12,24 +12,24 @@ import { Part } from "@/types/inventory";
 import { useFipeCars } from "@/hooks/use-fipe-cars";
 import Spinner from "@/components/Spinner";
 import { Switch } from "@/components/ui/switch";
-import { SelectInput } from "@/components/SelectInput";
 import MultiSelect from "@/components/MultiSelect";
+import { invalidValueMessage, isPositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 
 const formSchema = z.object({
-  code: z.string().min(1, "Código é obrigatório."),
-  name: z.string().min(1, "Nome é obrigatório."),
-  manufacturer: z.string().min(1, "Fabricante é obrigatório."),
+  code: z.string().min(1, isRequiredFieldMessage),
+  name: z.string().min(1, isRequiredFieldMessage),
+  manufacturer: z.string().min(1, isRequiredFieldMessage),
   purchasePrice: z
     .transform(Number)
-    .pipe(z.number("Obrigatório.").min(0, { message: "Deve ser positivo" }).max(10000, { message: "Valor inválido" })),
+    .pipe(z.number("Obrigatório.").min(0, { message: isPositiveNumberMessage }).max(10000, { message: invalidValueMessage })),
   salePrice: z
     .transform(Number)
-    .pipe(z.number("Obrigatório.").min(0, { message: "Deve ser positivo" }).max(10000, { message: "Valor inválido" })),
+    .pipe(z.number("Obrigatório.").min(0, { message: isPositiveNumberMessage }).max(10000, { message: invalidValueMessage })),
   initialQuantity: z
     .transform(Number)
-    .pipe(z.number("Obrigatório.").min(0, { message: "Deve ser positivo" }))
+    .pipe(z.number("Obrigatório.").min(0, { message: isPositiveNumberMessage }))
     .optional(),
-  minimumStock: z.transform(Number).pipe(z.number("Obrigatório.").min(0, { message: "Deve ser positivo" })),
+  minimumStock: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage })),
   isGeneralUse: z.boolean().default(true).optional(),
   compatibleCars: z.array(z.object({ brand: z.string(), model: z.string() })).optional(),
 });
@@ -229,7 +229,7 @@ export function PartForm({ initialData, onSubmit, isPending }: PartFormProps) {
         )}
 
         <Button type="submit" disabled={isPending} className="w-full">
-          {isPending ? "Salvando..." : "Salvar Peça"}
+          {isPending ? <Spinner /> : "Salvar Peça"}
         </Button>
       </form>
     </Form>
