@@ -58,7 +58,8 @@ export default function InventoryPage() {
           <div>
             <p className="text-orange-900 font-medium">Alerta de estoque baixo</p>
             <p className="text-secondary text-sm">
-              <span className="font-semibold mr-1">{lowStockSummary.count}</span>peça(s) estão com o estoque abaixo do mínimo.
+              <span className="font-bold mr-1">{`${lowStockSummary.count} ${lowStockSummary.count > 1 ? "peças" : "peça"}`}</span>
+              com o estoque abaixo do mínimo.
             </p>
           </div>
         </div>

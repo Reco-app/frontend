@@ -21,8 +21,8 @@ interface CustomerFormProps {
 
 const formSchema = z.object({
   name: z.string().min(3, { message: isRequiredFieldMessage }),
-  documentId: z.string().min(11, { message: "CPF/CNPJ inválido." }).max(14).optional(),
-  phone: z.string().min(10, { message: "Telefone inválido." }),
+  documentId: z.string().optional(),
+  phone: z.string().min(10, { message: "Telefone inválido." }).optional(),
   email: z.email({ message: "Email inválido." }).optional().or(z.literal("")),
   address: z.string().optional(),
   zipCode: z.string().max(9, { message: "CEP inválido." }).optional(),
@@ -99,7 +99,7 @@ export function CustomerForm({ initialData, onSubmit, isPending }: CustomerFormP
                   <OptionalBadge />
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Documento" {...field} />
+                  <Input placeholder="N° Documento" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -112,7 +112,7 @@ export function CustomerForm({ initialData, onSubmit, isPending }: CustomerFormP
               <FormItem>
                 <FormLabel>Telefone</FormLabel>
                 <FormControl>
-                  <Input placeholder="Telefone" {...field} />
+                  <Input placeholder="N° Telefone" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -176,7 +176,7 @@ export function CustomerForm({ initialData, onSubmit, isPending }: CustomerFormP
                     <OptionalBadge />
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="Endereço" {...field} />
+                    <Input placeholder="Rua, número, bairro..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -7,6 +7,7 @@ import { Part } from "@/types/inventory";
 import { useParts } from "@/hooks/use-parts";
 import { DataTable } from "@/components/DataTable";
 import { PartForm } from "./PartForm";
+import { TriangleAlert } from "lucide-react";
 
 const columns: ColumnDef<Part>[] = [
   {
@@ -42,7 +43,7 @@ const columns: ColumnDef<Part>[] = [
           <span>{part.quantity}</span>
           {part.isLowStock && (
             <Badge variant="destructive" className="bg-secondary">
-              Baixo
+              <TriangleAlert /> Baixo
             </Badge>
           )}
         </div>

@@ -73,6 +73,7 @@ export function VehiclesTable() {
         filterPlaceholder="Filtrar por placa..."
         createText="Novo Veículo"
         FormComponent={VehicleForm}
+        viewDetailsRoute="/vehicles/"
         createMutation={createMutation}
         updateMutation={updateMutation}
         deleteMutation={deleteMutation}

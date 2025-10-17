@@ -17,7 +17,7 @@ interface ServiceItemProps {
   parts?: Part[];
 }
 
-export function ServiceItem({ serviceIndex, removeService, employees, parts }: ServiceItemProps) {
+export function ServiceItemForm({ serviceIndex, removeService, employees, parts }: ServiceItemProps) {
   const { control } = useFormContext();
 
   const {

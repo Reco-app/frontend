@@ -1,4 +1,5 @@
 import { Customer } from "./customer";
+import { ServiceOrder } from "./service-order";
 
 export type Vehicle = {
   id: string;
@@ -9,6 +10,9 @@ export type Vehicle = {
   color?: string;
   ownerId: string;
   owner: Customer;
+  createdAt: Date;
+  updatedAt: Date;
+  serviceOrders: ServiceOrder[];
 };
 
 export type Car = {

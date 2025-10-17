@@ -42,6 +42,7 @@ export function EmployeesTable() {
       filterPlaceholder="Filtrar por nome..."
       createText="Novo Funcionário"
       FormComponent={EmployeeForm}
+      viewDetailsRoute="/employees"
       createMutation={createMutation}
       updateMutation={updateMutation}
       deleteMutation={deleteMutation}

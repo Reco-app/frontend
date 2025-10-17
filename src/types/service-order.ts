@@ -36,6 +36,9 @@ export interface Service {
   observations?: string;
   employee: { name: string };
   partsUsed: PartOnService[];
+  createdAt: Date;
+  updatedAt: Date;
+  serviceOrder: ServiceOrder;
 }
 
 export interface Payment {

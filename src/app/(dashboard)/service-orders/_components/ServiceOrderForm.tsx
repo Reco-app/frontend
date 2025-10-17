@@ -21,7 +21,7 @@ import { useVehicle } from "@/hooks/use-vehicles";
 import { useCustomer } from "@/hooks/use-customers";
 import { SelectInput } from "@/components/SelectInput";
 import Spinner from "@/components/Spinner";
-import { ServiceItem } from "./ServiceItem";
+import { ServiceItemForm } from "./ServiceItemForm";
 import { Textarea } from "@/components/ui/textarea";
 import { isPositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 import { Separator } from "@/components/ui/separator";
@@ -170,7 +170,7 @@ function GeneralInfoSection({ form, customers, vehicleOptions, watchedCustomerId
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>
-                  Saída Prevista <OptionalBadge />
+                  Data de Saída <OptionalBadge />
                 </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild className="bg-white h-10">
@@ -233,7 +233,7 @@ function ServicesSection({ control, employees, parts }: ServicesSectionProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {fields.map((field, index) => (
-          <ServiceItem key={field.id} serviceIndex={index} removeService={remove} employees={employees} parts={parts} />
+          <ServiceItemForm key={field.id} serviceIndex={index} removeService={remove} employees={employees} parts={parts} />
         ))}
         {fields.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">Nenhum serviço adicionado.</p>}
       </CardContent>

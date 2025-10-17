@@ -5,22 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { Customer } from "@/types/customer";
 import { Button } from "@/components/ui/button";
-import {
-  AlertCircle,
-  ArrowLeft,
-  Calendar,
-  CalendarFold,
-  Car,
-  CheckCircle,
-  Clock,
-  FileText,
-  Mail,
-  MapPin,
-  Phone,
-  Plus,
-  User,
-  XCircle,
-} from "lucide-react";
+import { ArrowLeft, CalendarFold, Car, Contact, FileText, Mail, MapPin, Phone, Plus, User } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Spinner from "@/components/Spinner";
@@ -29,22 +14,9 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { VehicleForm } from "@/components/VehicleForm";
 import { AxiosError } from "axios";
-import { capitalize, formatCurrency, formatDate } from "@/lib/formatters";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ServiceOrder, ServiceOrderStatus } from "@/types/service-order";
-
-const getStatusIcon = (status: ServiceOrder["status"]) => {
-  switch (status) {
-    case ServiceOrderStatus.FINISHED:
-      return <CheckCircle className="h-4 w-4 text-green-600" />;
-    case ServiceOrderStatus.IN_PROGRESS:
-      return <Clock className="h-4 w-4 text-blue-600" />;
-    case ServiceOrderStatus.AWAITING_APPROVAL:
-      return <AlertCircle className="h-4 w-4 text-yellow-600" />;
-    case ServiceOrderStatus.CANCELED:
-      return <XCircle className="h-4 w-4 text-red-600" />;
-  }
-};
+import { formatDate } from "@/lib/formatters";
+import { Accordion } from "@/components/ui/accordion";
+import ServiceOrderItem from "@/components/ServiceOrderItem";
 
 const fetchCustomerById = async (id: string): Promise<Customer> => {
   const { data } = await api.get(`/customers/${id}`);
@@ -93,8 +65,6 @@ export default function CustomerDetailPage() {
   if (isLoading) return <Spinner />;
   if (isError) return <div>Erro ao buscar dados do cliente.</div>;
 
-  console.log(customer);
-
   return (
     <div className="container mx-auto max-w-6xl p-6">
       <div className="flex items-center gap-4 mb-8">
@@ -102,7 +72,7 @@ export default function CustomerDetailPage() {
           <ArrowLeft className="h-8 w-8" />
         </Button>
         <div>
-          <h1 className="text-primary mb-1 text-2xl font-bold">{customer?.name}</h1>
+          <h1 className="text-primary mb-1 text-xl font-bold">{customer?.name}</h1>
           <p className="text-muted-foreground">Detalhes e histórico do cliente</p>
         </div>
       </div>
@@ -118,9 +88,16 @@ export default function CustomerDetailPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3">
+                <Contact className="text-muted-foreground h-4 w-4" />
+                <div>
+                  <p className="text-primary text-sm font-medium">Nome do cliente</p>
+                  <p className="text-muted-foreground text-sm">{customer?.name}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
                 <FileText className="text-muted-foreground h-4 w-4" />
                 <div>
-                  <p className="text-primary text-sm font-medium">Documento</p>
+                  <p className="text-primary text-sm font-medium">N° Documento</p>
                   <p className="text-muted-foreground text-sm">{customer?.documentId || "Não informado."}</p>
                 </div>
               </div>
@@ -128,7 +105,7 @@ export default function CustomerDetailPage() {
               <div className="flex items-center gap-3">
                 <Phone className="text-muted-foreground h-4 w-4" />
                 <div>
-                  <p className="text-primary text-sm font-medium">Telefone</p>
+                  <p className="text-primary text-sm font-medium">N° Telefone</p>
                   <p className="text-muted-foreground text-sm">{customer?.phone}</p>
                 </div>
               </div>
@@ -194,7 +171,7 @@ export default function CustomerDetailPage() {
               ) : (
                 <div className="md:grid-cols-2 grid max-h-[400px] grid-cols-2 gap-4 overflow-y-scroll">
                   {customer?.vehicles?.map((vehicle) => (
-                    <Card key={vehicle.id} className="bg-muted/30 py-2">
+                    <Card key={vehicle.id} className="bg-muted/30 py-2 shadow-none">
                       <CardContent className="p-4">
                         <div className="mb-2 flex items-start justify-between">
                           <h4 className="text-primary font-bold text-sm flex flex-col">
@@ -226,87 +203,23 @@ export default function CustomerDetailPage() {
                 <FileText className="h-5 w-5" />
                 Ordens de Serviço ({customer?.serviceOrders.length})
               </CardTitle>
-              <Button size="sm" variant="secondary" className="text-white">
+              <Button size="sm" variant="secondary" onClick={() => router.push("/service-orders/new")} className="text-white">
                 <Plus className="mr-2 h-4 w-4" />
-                Adicionar Veículo
+                Adicionar OS
               </Button>
             </CardHeader>
             <CardContent>
-              {customer?.serviceOrders.length === 0 ? (
-                <p className="text-muted-foreground text-center py-8">Nenhuma ordem de serviço encontrada para este cliente.</p>
-              ) : (
-                <Accordion type="single" collapsible className="w-full">
-                  {customer?.serviceOrders.map((order) => (
-                    <AccordionItem key={order.id} value={order.id}>
-                      <AccordionTrigger className="hover:no-underline">
-                        <div className="flex items-center justify-between w-full pr-4">
-                          <div className="flex items-center gap-3">
-                            {getStatusIcon(order.status)}
-                            <div className="text-left font-medium">
-                              <span className="text-primary/70 border-r-3 border-primary/20 pr-2">OS #{order.id.split("-")[0]}</span>
-                              <span className="text-primary pl-2">
-                                {order.vehicle?.carBrand} {order.vehicle?.carModel}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold text-secondary">{formatCurrency(order.totalAmount ?? 0)}</span>
-                          </div>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="pt-4 space-y-4">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-primary">
-                            <div>
-                              <h5 className="font-medium mb-2 text-foreground">Datas</h5>
-                              <div className="space-y-1 text-sm">
-                                <p className="flex items-center gap-2 text-muted-foreground">
-                                  <Calendar className="h-3 w-3" />
-                                  <span className="font-medium">Criado:</span> {formatDate(order.createdAt)}
-                                </p>
-                                <p className="flex items-center gap-2 text-muted-foreground">
-                                  <Clock className="h-3 w-3" />
-                                  <span className="font-medium">Atualizado:</span> {formatDate(order.updatedAt)}
-                                </p>
-                              </div>
-                            </div>
-
-                            <div>
-                              <h5 className="font-medium mb-2 text-foreground">Serviços</h5>
-                              <ul className="space-y-1 text-sm">
-                                {order.services?.map((service, index) => (
-                                  <li key={index} className="flex items-center gap-2 list-disc">
-                                    <span className="font-semibold">-</span>
-                                    <span>{capitalize(service.name)}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-
-                          {order.problemDescription && (
-                            <div>
-                              <h5 className="font-medium mb-2">Observações</h5>
-                              <p className="text-sm text-muted-foreground bg-muted/60 border p-3 rounded-md">
-                                {capitalize(order.problemDescription)}
-                              </p>
-                            </div>
-                          )}
-
-                          <div className="flex justify-end gap-2 pt-2">
-                            <Button variant="outline" size="sm" onClick={() => router.push(`/service-orders/${order.id}/edit`)}>
-                              Editar OS
-                            </Button>
-                            <Button size="sm" onClick={() => router.push(`/service-orders/${order.id}/`)}>
-                              Ver Detalhes
-                            </Button>
-                          </div>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              )}
+              <div className="max-h-[400px] overflow-y-scroll">
+                {customer?.serviceOrders.length === 0 ? (
+                  <p className="text-muted-foreground text-center py-8">Nenhuma ordem de serviço encontrada para este cliente.</p>
+                ) : (
+                  <Accordion type="single" collapsible className="w-full">
+                    {customer?.serviceOrders.map((order) => (
+                      <ServiceOrderItem key={order.id} order={order} />
+                    ))}
+                  </Accordion>
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>
