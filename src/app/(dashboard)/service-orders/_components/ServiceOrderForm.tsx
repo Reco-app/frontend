@@ -23,7 +23,7 @@ import { SelectInput } from "@/components/SelectInput";
 import Spinner from "@/components/Spinner";
 import { ServiceItemForm } from "./ServiceItemForm";
 import { Textarea } from "@/components/ui/textarea";
-import { isPositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
+import { shouldBePositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 import { Separator } from "@/components/ui/separator";
 import OptionalBadge from "@/components/OptionalBadge";
 
@@ -34,20 +34,20 @@ const formSchema = z.object({
   predictedExitDate: z.date().optional(),
   problemDescription: z.string().optional(),
   status: z.enum(ServiceOrderStatus, "Selecione um status."),
-  discount: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage })),
+  discount: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: shouldBePositiveNumberMessage })),
   services: z
     .array(
       z.object({
         name: z.string().min(1, isRequiredFieldMessage),
         employeeId: z.uuid("Selecione um funcionário."),
-        laborCost: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage })),
+        laborCost: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: shouldBePositiveNumberMessage })),
         parts: z
           .array(
             z.object({
               partId: z.uuid(),
               quantityUsed: z
                 .transform(Number)
-                .pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage })),
+                .pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: shouldBePositiveNumberMessage })),
             })
           )
           .optional(),
@@ -58,11 +58,11 @@ const formSchema = z.object({
     .array(
       z.object({
         method: z.enum(PaymentMethod),
-        amount: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage })),
+        amount: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: shouldBePositiveNumberMessage })),
         date: z.date(isRequiredFieldMessage).optional(),
         installments: z
           .transform(Number)
-          .pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage }))
+          .pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: shouldBePositiveNumberMessage }))
           .optional(),
       })
     )

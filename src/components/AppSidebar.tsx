@@ -1,6 +1,20 @@
 "use client";
 
-import { Car, Database, FileText, Home, Package, Settings, Users, IdCardLanyard, Wrench, User2, ChevronUp, LogOut } from "lucide-react";
+import {
+  Car,
+  Database,
+  FileText,
+  Home,
+  Package,
+  Settings,
+  Users,
+  IdCardLanyard,
+  Wrench,
+  User2,
+  ChevronUp,
+  LogOut,
+  BanknoteArrowDown,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -50,6 +64,11 @@ const items = [
     title: "Ordens de Serviço",
     url: "/ordens-servico",
     icon: Wrench,
+  },
+  {
+    title: "Despesas",
+    url: "/expenses",
+    icon: BanknoteArrowDown,
   },
   {
     title: "Financeiro",

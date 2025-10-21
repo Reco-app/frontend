@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import Spinner from "@/components/Spinner";
 import OptionalBadge from "@/components/OptionalBadge";
-import { isPositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
+import { shouldBePositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 
 interface EmployeeFormProps {
   initialData?: Employee | null;
@@ -29,7 +29,10 @@ const formSchema = z.object({
   salary: z
     .transform(Number)
     .pipe(
-      z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage }).max(10000, { message: "Salário inválido" })
+      z
+        .number({ error: isRequiredFieldMessage })
+        .min(0, { message: shouldBePositiveNumberMessage })
+        .max(10000, { message: "Salário inválido" })
     ),
   role: z.string(isRequiredFieldMessage),
 });

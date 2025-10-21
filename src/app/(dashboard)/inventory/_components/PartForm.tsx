@@ -13,7 +13,7 @@ import { useFipeCars } from "@/hooks/use-fipe-cars";
 import Spinner from "@/components/Spinner";
 import { Switch } from "@/components/ui/switch";
 import MultiSelect from "@/components/MultiSelect";
-import { invalidValueMessage, isPositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
+import { invalidValueMessage, shouldBePositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 
 const formSchema = z.object({
   code: z.string().min(1, isRequiredFieldMessage),
@@ -21,15 +21,15 @@ const formSchema = z.object({
   manufacturer: z.string().min(1, isRequiredFieldMessage),
   purchasePrice: z
     .transform(Number)
-    .pipe(z.number("Obrigatório.").min(0, { message: isPositiveNumberMessage }).max(10000, { message: invalidValueMessage })),
+    .pipe(z.number("Obrigatório.").min(0, { message: shouldBePositiveNumberMessage }).max(10000, { message: invalidValueMessage })),
   salePrice: z
     .transform(Number)
-    .pipe(z.number("Obrigatório.").min(0, { message: isPositiveNumberMessage }).max(10000, { message: invalidValueMessage })),
+    .pipe(z.number("Obrigatório.").min(0, { message: shouldBePositiveNumberMessage }).max(10000, { message: invalidValueMessage })),
   initialQuantity: z
     .transform(Number)
-    .pipe(z.number("Obrigatório.").min(0, { message: isPositiveNumberMessage }))
+    .pipe(z.number("Obrigatório.").min(0, { message: shouldBePositiveNumberMessage }))
     .optional(),
-  minimumStock: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: isPositiveNumberMessage })),
+  minimumStock: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: shouldBePositiveNumberMessage })),
   isGeneralUse: z.boolean().default(true).optional(),
   compatibleCars: z.array(z.object({ brand: z.string(), model: z.string() })).optional(),
 });

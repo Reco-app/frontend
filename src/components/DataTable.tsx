@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  CellContext,
   ColumnDef,
   ColumnFiltersState,
   SortingState,
@@ -48,6 +49,7 @@ interface DataTableProps<TData> {
   }>;
   onCreate?: () => void;
   onEdit?: (data: TData) => void;
+  actions?: boolean;
   createMutation: { mutate: (data: any, options?: any) => void; isPending: boolean };
   updateMutation: { mutate: (data: any, options?: any) => void; isPending: boolean };
   deleteMutation?: { mutate: (id: string, options?: any) => void; isPending: boolean };
@@ -67,6 +69,7 @@ export function DataTable<TData>({
   deleteMutation,
   onCreate,
   onEdit,
+  actions = true,
 }: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -81,32 +84,36 @@ export function DataTable<TData>({
   const tableColumns = React.useMemo<ColumnDef<TData>[]>(
     () => [
       ...columns,
-      {
-        id: "actions",
-        cell: ({ row }) => (
-          <TableActions
-            onEdit={
-              onEdit
-                ? () => onEdit(row.original)
-                : () => {
-                    setSelectedData(row.original);
-                    setIsEditDialogOpen(true);
+      ...(actions
+        ? [
+            {
+              id: "actions",
+              cell: ({ row }: CellContext<TData, unknown>) => (
+                <TableActions
+                  onEdit={
+                    onEdit
+                      ? () => onEdit(row.original)
+                      : () => {
+                          setSelectedData(row.original);
+                          setIsEditDialogOpen(true);
+                        }
                   }
-            }
-            onDelete={
-              deleteMutation
-                ? () => {
-                    setSelectedData(row.original);
-                    setIsDeleteDialogOpen(true);
+                  onDelete={
+                    deleteMutation
+                      ? () => {
+                          setSelectedData(row.original);
+                          setIsDeleteDialogOpen(true);
+                        }
+                      : undefined
                   }
-                : undefined
-            }
-            onViewDetails={viewDetailsRoute ? () => router.push(`${viewDetailsRoute}/${(row.original as any).id}`) : undefined}
-          />
-        ),
-      },
+                  onViewDetails={viewDetailsRoute ? () => router.push(`${viewDetailsRoute}/${(row.original as any).id}`) : undefined}
+                />
+              ),
+            },
+          ]
+        : []),
     ],
-    [columns, viewDetailsRoute, router, onEdit]
+    [columns, viewDetailsRoute, router, onEdit, actions, deleteMutation]
   );
 
   const table = useReactTable({
