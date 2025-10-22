@@ -54,6 +54,7 @@ export function ExpenseForm({ initialData, onSubmit, isPending }: ExpenseFormPro
           date: new Date(initialData.date),
         }
       : {
+          name: "",
           category: "",
           value: 0,
           date: new Date(),
@@ -108,7 +109,7 @@ export function ExpenseForm({ initialData, onSubmit, isPending }: ExpenseFormPro
               <FormItem>
                 <FormLabel>Valor (R$)</FormLabel>
                 <FormControl>
-                  <Input type="number" step="0.01" placeholder="Ex: 850.00" {...field} />
+                  <Input type="number" step={1} placeholder="Ex: 850.00" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -10,7 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExpensesTable } from "./_components/ExpensesTable";
 import { BillsTable } from "./_components/BillsTable";
 import { BillsCalendar } from "./_components/BillsCalendar";
-import { TriangleAlert } from "lucide-react";
+import { BanknoteArrowDown, BanknoteArrowUp, CalendarSync, ReceiptText, TriangleAlert } from "lucide-react";
+import { StatCard } from "@/components/StatCard";
+import { cn } from "@/lib/utils";
 
 export default function ExpensesAndBillsPage() {
   const { summary: expenseSummary, isLoading: isLoadingExpenses } = useExpenses();
@@ -42,92 +44,68 @@ export default function ExpensesAndBillsPage() {
 
         <TabsContent value="expenses" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="text-primary">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total de Despesas</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(expenseSummary?.summary.total ?? 0)}</div>
-                <p className="text-sm text-muted-foreground">Nos últimos 30 dias</p>
-              </CardContent>
-            </Card>
-            <Card className="text-primary">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Despesas Recorrentes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-end">
-                  <span className="text-2xl font-bold">{expenseSummary?.summary.recurringCount ?? 0}</span>
-                  <span className="ml-4 text-sm text-muted-foreground font-medium">
-                    {formatCurrency(expenseSummary?.summary.recurringTotal ?? 0)}
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground">Despesas mensais</p>
-              </CardContent>
-            </Card>
-            <Card className="text-primary">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Despesas Únicas</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-end">
-                  <span className="text-2xl font-bold">{expenseSummary?.summary.singleCount ?? 0}</span>
-                  <span className="ml-4 text-sm font-medium text-muted-foreground">
-                    {formatCurrency(expenseSummary?.summary.singleTotal ?? 0)}
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground">Nos últimos 30 dias</p>
-              </CardContent>
-            </Card>
+            <StatCard
+              title="Total de despesas"
+              value={formatCurrency(expenseSummary?.summary.total ?? 0)}
+              description="Nos últimos 30 dias"
+              icon={<BanknoteArrowDown className="h-4 w-4 text-muted-foreground" />}
+              isLoading={isLoadingExpenses}
+            />
+            <StatCard
+              title="Despesas recorrentes"
+              value={expenseSummary?.summary.recurringCount ?? 0}
+              description="Nos últimos 30 dias"
+              secondaryValue={formatCurrency(expenseSummary?.summary.recurringTotal ?? 0)}
+              icon={<CalendarSync className="h-4 w-4 text-muted-foreground" />}
+              isLoading={isLoadingExpenses}
+            />
+            <StatCard
+              title="Despesas únicas"
+              value={expenseSummary?.summary.singleCount ?? 0}
+              secondaryValue={formatCurrency(expenseSummary?.summary.singleTotal ?? 0)}
+              description="Nos últimos 30 dias"
+              icon={<ReceiptText className="h-4 w-4 text-muted-foreground" />}
+              isLoading={isLoadingExpenses}
+            />
           </div>
           <ExpensesTable />
         </TabsContent>
 
         <TabsContent value="bills" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-4">
-            <Card className="text-primary">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Total Pendente</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{formatCurrency(billSummary?.summary.totalPendingValue ?? 0)}</div>
-                <p className="text-sm text-muted-foreground">{billSummary?.summary.pendingCount ?? 0} boleto(s) em aberto</p>
-              </CardContent>
-            </Card>
-            <Card className="text-primary">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-destructive">Vencidos</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-destructive">{formatCurrency(billSummary?.summary.overdueValue ?? 0)}</div>
-                <p className="text-sm text-muted-foreground">{billSummary?.summary.overdueCount ?? 0} boleto(s) vencidos</p>
-              </CardContent>
-            </Card>
-            <Card className="text-primary">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Pagos</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-end">
-                  <span className="text-2xl font-bold">{billSummary?.summary.paidCount ?? 0}</span>
-                  <span className="ml-4 text-sm font-medium text-muted-foreground">
-                    {formatCurrency(billSummary?.summary.paidTotal ?? 0)}
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground">Nos últimos 30 dias</p>
-              </CardContent>
-            </Card>
-            <Card className="text-primary">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Total de Boletos</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-end">
-                  <span className="text-2xl font-bold">{billSummary?.summary.totalBills ?? 0}</span>
-                </div>
-                <p className="text-sm text-muted-foreground">Cadastrados</p>
-              </CardContent>
-            </Card>
+            <StatCard
+              title="Total pendente"
+              value={formatCurrency(billSummary?.summary.totalPendingValue ?? 0)}
+              description={`${billSummary?.summary.pendingCount} boleto(s) em aberto`}
+              icon={<BanknoteArrowDown className="h-4 w-4 text-muted-foreground" />}
+              isLoading={isLoadingBills}
+            />
+
+            <StatCard
+              title="Vencidos"
+              value={formatCurrency(billSummary?.summary.overdueValue ?? 0)}
+              description={`${billSummary?.summary.overdueCount} boleto(s) vencidos`}
+              icon={<CalendarSync className="h-4 w-4 text-muted-foreground" />}
+              valueClass={cn((billSummary?.summary.overdueValue ?? 0) > 0 ? "text-destructive" : "text-primary")}
+              isLoading={isLoadingBills}
+            />
+
+            <StatCard
+              title="Pagos"
+              value={billSummary?.summary.paidCount ?? 0}
+              secondaryValue={formatCurrency(billSummary?.summary.paidTotal ?? 0)}
+              description="Nos últimos 30 dias"
+              icon={<ReceiptText className="h-4 w-4 text-muted-foreground" />}
+              isLoading={isLoadingBills}
+            />
+
+            <StatCard
+              title="Total de boletos"
+              value={billSummary?.summary.totalBills ?? 0}
+              description="Cadastrados"
+              icon={<ReceiptText className="h-4 w-4 text-muted-foreground" />}
+              isLoading={isLoadingBills}
+            />
           </div>
           <BillsTable />
         </TabsContent>

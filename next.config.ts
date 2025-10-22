@@ -23,44 +23,6 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-  async rewrites() {
-    return [
-      {
-        source: "/dashboard",
-        destination: "/customers",
-      },
-      {
-        source: "/funcionarios",
-        destination: "/employees",
-      },
-      {
-        source: "/clientes",
-        destination: "/customers",
-      },
-      {
-        source: "/clientes/:id",
-        destination: "/customers/:id",
-      },
-      {
-        source: "/veiculos",
-        destination: "/vehicles",
-      },
-      {
-        source: "/veiculos/:id",
-        destination: "/vehicles/:id",
-      },
-      {
-        source: "/estoque",
-        destination: "/inventory",
-      },
-      {
-        source: "/estoque/:id",
-        destination: "/inventory/:id",
-      },
-      { source: "/ordens-servico", destination: "/service-orders" },
-      { source: "/ordens-servico/nova", destination: "/service-orders/new" },
-    ];
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },

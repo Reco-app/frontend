@@ -37,32 +37,32 @@ import { cn } from "@/lib/utils";
 const items = [
   {
     title: "Painel",
-    url: "/painel",
+    url: "/dashboard",
     icon: Home,
   },
   {
     title: "Funcionários",
-    url: "/funcionarios",
+    url: "/employees",
     icon: IdCardLanyard,
   },
   {
     title: "Clientes",
-    url: "/clientes",
+    url: "/customers",
     icon: Users,
   },
   {
     title: "Veículos",
-    url: "/veiculos",
+    url: "/vehicles",
     icon: Car,
   },
   {
     title: "Estoque",
-    url: "/estoque",
+    url: "/inventory",
     icon: Package,
   },
   {
     title: "Ordens de Serviço",
-    url: "/ordens-servico",
+    url: "/service-orders",
     icon: Wrench,
   },
   {
@@ -72,18 +72,13 @@ const items = [
   },
   {
     title: "Financeiro",
-    url: "/financeiro",
+    url: "/finance",
     icon: FileText,
   },
   {
     title: "Backup",
     url: "/backup",
     icon: Database,
-  },
-  {
-    title: "Configurações",
-    url: "/configuracoes",
-    icon: Settings,
   },
 ];
 
