@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatCurrency, formatPercentage } from "@/lib/formatters";
+import { TrendingDown, TrendingUp } from "lucide-react";
 
 interface StatCardProps {
   title: string;
@@ -9,10 +11,24 @@ interface StatCardProps {
   description?: string;
   icon?: React.ReactNode;
   isLoading?: boolean;
+  isPercentage?: boolean;
+  isMonetary?: boolean;
+  growthData?: number | null;
   valueClass?: string;
 }
 
-export function StatCard({ title, value, secondaryValue, description, icon, isLoading, valueClass }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  secondaryValue,
+  description,
+  icon,
+  isLoading,
+  isMonetary = false,
+  isPercentage = false,
+  growthData,
+  valueClass,
+}: StatCardProps) {
   if (isLoading) {
     return (
       <Card>
@@ -30,16 +46,16 @@ export function StatCard({ title, value, secondaryValue, description, icon, isLo
 
   return (
     <Card className="text-primary">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         {icon}
       </CardHeader>
       <CardContent>
-        <div className={cn("text-2xl font-bold flex items-end", valueClass)}>
-          {value}
+        <div className={cn("text-xl font-bold flex items-end", valueClass)}>
+          {isMonetary ? formatCurrency(value) : isPercentage ? formatPercentage(value) : value}
           {secondaryValue && <span className="text-muted-foreground text-sm font-medium ml-4">{secondaryValue}</span>}
         </div>
-        {description && <p className="text-xs mt-1 text-muted-foreground">{description}</p>}
+        <div className="flex">{description && <p className="text-xs mt-1 text-muted-foreground">{description}</p>}</div>
       </CardContent>
     </Card>
   );

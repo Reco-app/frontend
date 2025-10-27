@@ -12,11 +12,17 @@ export const formatDate = (date: string) => {
 /**
  * Formata um número para o padrão de moeda BRL (R$).
  */
-export const formatCurrency = (value: number) => {
+export const formatCurrency = (value: number | string) => {
+  const formattedValue = Number(value);
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
-  }).format(value);
+  }).format(formattedValue);
+};
+
+export const formatPercentage = (value: number | string) => {
+  const formattedValue = Number(value);
+  return `${formattedValue}%`;
 };
 
 /**

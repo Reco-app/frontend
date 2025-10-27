@@ -1,10 +1,9 @@
-import { PaymentStatus } from "./service-order"; // Reutilize o enum
+import { PaymentStatus } from "./service-order";
 
 export interface ReceivableItem {
   id: string;
-  osNumber: string;
-  customerName: string;
-  vehiclePlate: string;
+  customer: string;
+  vehicle: string;
   conclusionDate: string;
   value: number;
   status: PaymentStatus;
