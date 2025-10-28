@@ -6,39 +6,42 @@ import {
   FileText,
   Home,
   Package,
-  Settings,
   Users,
   IdCardLanyard,
   Wrench,
-  User2,
-  ChevronUp,
-  LogOut,
   BanknoteArrowDown,
+  LayoutDashboard,
+  PanelRightClose,
 } from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Separator } from "./ui/separator";
 import { useAuthStore } from "@/stores/auth.store";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import React from "react";
+import { Button } from "./ui/button";
+import Image from "next/image";
+
+import logo from "../../public/logo.svg";
+import logoWithoutText from "../../public/logo-2.svg";
 
 const items = [
   {
     title: "Painel",
     url: "/dashboard",
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
     title: "Funcionários",
@@ -85,14 +88,21 @@ const items = [
 export function AppSidebar() {
   const { user } = useAuthStore();
   const pathname = usePathname();
+  const { open } = useSidebar();
 
   return (
-    <Sidebar>
-      <SidebarContent className="bg-primary">
+    <Sidebar collapsible="icon" variant="floating">
+      <SidebarContent className="bg-accent">
+        <div className={cn("flex items-center m-1", open ? "justify-between" : "justify-center")}>
+          {open ? (
+            <Image src={logo} alt="Reco.app" className="ml-2" height={80} width={80} />
+          ) : (
+            <Image src={logoWithoutText} alt="Reco.app" height={30} width={30} />
+          )}
+        </div>
+
         <SidebarGroup>
-          <SidebarGroupLabel className="text-lg font-semibold text-white">Reco.app</SidebarGroupLabel>
-          <Separator className="bg-white/20" />
-          <SidebarGroupContent className="mt-4">
+          <SidebarGroupContent className={cn(open ? "mt-4" : "mt-8")}>
             <SidebarMenu>
               {items.map((item) => {
                 const isActive = pathname.startsWith(item.url);
@@ -101,7 +111,10 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <Link
                         href={item.url}
-                        className={cn("font-semibold text-white hover:bg-white/10 h-10 hover:text-white py-4", isActive && "bg-white/20")}
+                        className={cn(
+                          "text-muted-foreground h-8 py-5 hover:text-red-400 font-medium",
+                          isActive && "bg-primary/5 text-blue-900 font-semibold"
+                        )}
                       >
                         <item.icon />
                         <span>{item.title}</span>
@@ -114,26 +127,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="bg-primary">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="text-white">
-                  <User2 /> {user?.name}
-                  <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-                <DropdownMenuItem className="hover:bg-destructive/10 text-destructive">
-                  <LogOut color="red" />
-                  <span>Sair</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+      <SidebarTrigger
+        className={cn("absolute z-50 transition-all", open ? "right-4 top-8" : "right-0 top-8 bg-accent hover:bg-accent translate-x-1/2")}
+      />
     </Sidebar>
   );
 }

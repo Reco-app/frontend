@@ -47,20 +47,20 @@
 :root {
   --radius: 0.625rem;
   --destructive-foreground: oklch(0.974 0.005 250);
-  --background: oklch(97.015% 0.00011 271.152);
+  --background: oklch(100% 0.00011 271.152);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.2968 0.1293 262.12);
+  --primary: oklch(34.99% 0.14859 262.786);
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.7049 0.1867 47.6);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --tertiary: oklch(0.5478 0.16 43.66);
   --muted: oklch(0.968 0.007 247.896);
   --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
+  --accent: oklch(94.977% 0.00871 248.203);
   --accent-foreground: oklch(0.208 0.042 265.755);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.929 0.013 255.508);
