@@ -47,7 +47,7 @@ export default function ServiceOrderDetailPage() {
   const subtotal = totalAmount + (order?.discount ?? 0);
   const balance = totalAmount - totalPaid;
 
-  if (isLoading) return <Spinner message="Carregando Ordem de Serviço..." />;
+  if (isLoading) return <Spinner />;
   if (isError) return <div className="text-center text-destructive">Erro ao carregar os dados.</div>;
 
   return (

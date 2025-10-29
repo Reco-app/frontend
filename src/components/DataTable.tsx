@@ -153,7 +153,7 @@ export function DataTable<TData>({
           placeholder={filterPlaceholder}
           value={(table.getColumn(filterColumnId)?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn(filterColumnId)?.setFilterValue(event.target.value)}
-          className="max-w-sm bg-white"
+          className="max-w-sm bg-input"
         />
         <Button onClick={onCreate ? onCreate : () => setIsCreateDialogOpen(true)}>
           <Plus strokeWidth={3} className="mr-2 h-4 w-4" /> {createText}
@@ -225,7 +225,7 @@ export function DataTable<TData>({
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
         <DialogOverlay />
         <DialogContent>
-          <DialogHeader className="mb-2">
+          <DialogHeader className="mb-2 text-primary">
             <DialogTitle>Cadastrar {createText.replace("Novo ", "")}</DialogTitle>
             <DialogDescription>Preencha os campos do formulário abaixo.</DialogDescription>
           </DialogHeader>
@@ -246,9 +246,9 @@ export function DataTable<TData>({
           <FormComponent
             initialData={selectedData}
             isPending={updateMutation.isPending}
-            onSubmit={(values) =>
-              updateMutation.mutate({ id: (selectedData as any)?.id, ...values }, { onSuccess: () => setIsEditDialogOpen(false) })
-            }
+            onSubmit={(values) => {
+              updateMutation.mutate({ id: (selectedData as any)?.id, ...values }, { onSuccess: () => setIsEditDialogOpen(false) });
+            }}
           />
         </DialogContent>
       </Dialog>

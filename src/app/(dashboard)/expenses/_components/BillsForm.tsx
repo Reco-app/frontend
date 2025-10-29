@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/formatters";
 import { shouldBePositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 import OptionalBadge from "@/components/OptionalBadge";
+import Spinner from "@/components/Spinner";
 
 // Schema Zod para validação do formulário de Boleto
 const formSchema = z.object({
@@ -185,7 +186,7 @@ export function BillForm({ initialData, onSubmit, isPending }: BillFormProps) {
         />
 
         <Button type="submit" disabled={isPending} className="w-full">
-          {isPending ? "Salvando..." : "Salvar Boleto"}
+          {isPending ? <Spinner /> : "Salvar Boleto"}
         </Button>
       </form>
     </Form>

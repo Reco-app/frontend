@@ -1,6 +1,5 @@
 import api from "@/lib/api";
-import { DashboardData } from "@/types/dashboard";
-import { DashboardPeriod } from "@/types/dashboard-period.enum";
+import { DashboardData, DashboardPeriod } from "@/types/dashboard";
 
 export const dashboardService = {
   getDashboardData: async (period: DashboardPeriod): Promise<DashboardData> => {

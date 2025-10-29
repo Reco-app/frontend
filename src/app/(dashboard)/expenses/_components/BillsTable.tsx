@@ -21,6 +21,7 @@ import { CheckCircle } from "lucide-react";
 import { DataTable } from "@/components/DataTable";
 import { useBills } from "@/hooks/use-bills";
 import { BillForm } from "./BillsForm";
+import Spinner from "@/components/Spinner";
 
 const calculatedStatusMap: Record<BillStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   PENDING: { label: "Pendente", variant: "outline" },
@@ -150,7 +151,7 @@ export function BillsTable() {
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setBillToPay(null)}>Cancelar</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmPayment} disabled={markAsPaidMutation.isPending}>
-              {markAsPaidMutation.isPending ? "Confirmando..." : "Sim, confirmar pagamento"}
+              {markAsPaidMutation.isPending ? <Spinner /> : "Sim, confirmar pagamento"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

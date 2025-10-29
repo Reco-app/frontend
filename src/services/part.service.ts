@@ -9,7 +9,6 @@ export const partService = {
   getLowStockSummary: async (): Promise<{ count: number }> => (await api.get("/parts/low-stock-summary")).data,
   create: async (data: CreatePartData): Promise<Part> => (await api.post("/parts", data)).data,
   update: async (id: string, data: UpdatePartData): Promise<Part> => {
-    console.log("Data: ", data);
     return (await api.patch(`/parts/${id}`, data)).data;
   },
   remove: async (id: string): Promise<void> => await api.delete(`/parts/${id}`),

@@ -26,12 +26,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { shouldBePositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 import { Separator } from "@/components/ui/separator";
 import OptionalBadge from "@/components/OptionalBadge";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   customerId: z.uuid("Selecione um cliente."),
   vehicleId: z.uuid("Selecione um veículo."),
   entryDate: z.date(isRequiredFieldMessage),
-  predictedExitDate: z.date().optional(),
+  exitDate: z.date().optional(),
   problemDescription: z.string().optional(),
   status: z.enum(ServiceOrderStatus, "Selecione um status."),
   discount: z.transform(Number).pipe(z.number({ error: isRequiredFieldMessage }).min(0, { message: shouldBePositiveNumberMessage })),
@@ -165,7 +166,7 @@ function GeneralInfoSection({ form, customers, vehicleOptions, watchedCustomerId
             )}
           />
           <FormField
-            name="predictedExitDate"
+            name="exitDate"
             control={form.control}
             render={({ field }) => (
               <FormItem className="flex flex-col">
@@ -432,7 +433,7 @@ export function ServiceOrderForm({ initialData, onSubmit, isPending }: ServiceOr
       ? {
           ...initialData,
           entryDate: new Date(initialData.entryDate),
-          predictedExitDate: initialData.predictedExitDate ? new Date(initialData.predictedExitDate) : undefined,
+          exitDate: initialData.exitDate ? new Date(initialData.exitDate) : undefined,
           discount: initialData.discount ?? 0,
           payments: initialData.payments?.map((p) => ({ ...p, date: new Date(p.date) })) ?? [],
           services:
@@ -454,7 +455,7 @@ export function ServiceOrderForm({ initialData, onSubmit, isPending }: ServiceOr
           services: [],
           payments: [],
           problemDescription: "",
-          predictedExitDate: undefined,
+          exitDate: undefined,
         },
   });
 
@@ -466,7 +467,7 @@ export function ServiceOrderForm({ initialData, onSubmit, isPending }: ServiceOr
   const { errors } = form.formState;
   React.useEffect(() => {
     if (Object.keys(errors).length > 0) {
-      console.log("ERROS DE VALIDAÇÃO DO FORMULÁRIO:", errors);
+      toast.error(`Erros de validação: ${errors}`);
     }
   }, [errors]);
 
@@ -506,7 +507,7 @@ export function ServiceOrderForm({ initialData, onSubmit, isPending }: ServiceOr
   const balance = totalAmount - totalPaid;
 
   const isLoading = isLoadingCustomers || isLoadingVehicles || isLoadingEmployees || isLoadingParts;
-  if (isLoading) return <Spinner message="Carregando dados necessários..." />;
+  if (isLoading) return <Spinner />;
 
   return (
     <Form {...form}>

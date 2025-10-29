@@ -50,7 +50,7 @@ export function StockMovementForm({ initialData, isPending, onSubmit }: StockMov
   }, [parts]);
 
   if (isLoading) {
-    return <Spinner message="Carregando peças..." />;
+    return <Spinner />;
   }
 
   return (
@@ -130,7 +130,7 @@ export function StockMovementForm({ initialData, isPending, onSubmit }: StockMov
         />
 
         <Button type="submit" disabled={isPending} className="w-full">
-          {isPending ? "Registrando..." : "Registrar Movimentação"}
+          {isPending ? <Spinner /> : "Registrar Movimentação"}
         </Button>
       </form>
     </Form>

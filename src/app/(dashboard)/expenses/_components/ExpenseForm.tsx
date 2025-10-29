@@ -18,6 +18,7 @@ import { formatDate } from "@/lib/formatters";
 import { shouldBePositiveNumberMessage, isRequiredFieldMessage } from "@/lib/schemaMessages";
 import OptionalBadge from "@/components/OptionalBadge";
 import { SelectInput } from "@/components/SelectInput";
+import Spinner from "@/components/Spinner";
 
 const expenseCategories = [
   { label: "Salários e Encargos", value: "Salários e Encargos" },
@@ -176,7 +177,7 @@ export function ExpenseForm({ initialData, onSubmit, isPending }: ExpenseFormPro
         />
 
         <Button type="submit" disabled={isPending} className="w-full">
-          {isPending ? "Salvando..." : "Salvar Despesa"}
+          {isPending ? <Spinner /> : "Salvar Despesa"}
         </Button>
       </form>
     </Form>

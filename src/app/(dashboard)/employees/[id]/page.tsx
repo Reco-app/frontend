@@ -25,6 +25,7 @@ import { formatCurrency, formatDate } from "@/lib/formatters";
 import { Accordion } from "@/components/ui/accordion";
 import { Employee } from "@/types/employee";
 import ServiceItem from "../_components/ServiceItem";
+import { Separator } from "@/components/ui/separator";
 
 const fetchEmployeeById = async (id: string): Promise<Employee> => {
   const { data } = await api.get(`/employees/${id}`);
@@ -50,8 +51,6 @@ export default function EmployeeDetailPage() {
   if (isLoading) return <Spinner />;
   if (isError) return <div>Erro ao buscar dados do funcionário.</div>;
 
-  console.log(employee);
-
   return (
     <div className="container mx-auto max-w-6xl p-6">
       <div className="flex items-center gap-4 mb-8">
@@ -68,12 +67,13 @@ export default function EmployeeDetailPage() {
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-primary">
                 <User className="h-5 w-5" />
                 Informações de Contato
               </CardTitle>
+              <Separator className="mt-2" />
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
               <div className="flex items-center gap-3">
                 <Contact className="text-muted-foreground h-4 w-4" />
                 <div>

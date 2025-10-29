@@ -1,11 +1,37 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { employeeService } from "@/services/employee.service";
+import { EmployeeDataPeriod, employeeService } from "@/services/employee.service";
+import React from "react";
 
 const EMPLOYEES_QUERY_KEY = ["employees"];
 
 const showError = (err: any) => {
   toast.error(`Erro! ${err.message}`);
+};
+
+const DASHBOARD_KEY = ["employee-stats"];
+
+export const useEmployeeStats = () => {
+  const [period, setPeriod] = React.useState<EmployeeDataPeriod>(EmployeeDataPeriod.LAST_7_DAYS);
+
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: [...DASHBOARD_KEY, period],
+    queryFn: () => employeeService.getStats(period),
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const changePeriod = (newPeriod: EmployeeDataPeriod) => {
+    setPeriod(newPeriod);
+  };
+
+  return {
+    employeeStatsData: data,
+    isLoadingStats: isLoading,
+    isError,
+    error,
+    currentPeriod: period,
+    changePeriod,
+  };
 };
 
 export const useEmployee = () => {
@@ -30,7 +56,7 @@ export const useEmployee = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Object }) => employeeService.update(id, data),
+    mutationFn: ({ id, ...data }: any) => employeeService.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: EMPLOYEES_QUERY_KEY });
       toast.success("Funcionário atualizado com sucesso.");

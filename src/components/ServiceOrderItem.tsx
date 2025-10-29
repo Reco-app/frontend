@@ -26,7 +26,6 @@ interface ServiceOrderItemProps {
 
 export default function ServiceOrderItem({ order }: ServiceOrderItemProps) {
   const router = useRouter();
-  console.log(order);
   return (
     <AccordionItem value={order.id}>
       <AccordionTrigger className="hover:no-underline">
@@ -56,7 +55,7 @@ export default function ServiceOrderItem({ order }: ServiceOrderItemProps) {
                 <p className="flex items-center gap-2 text-muted-foreground">
                   <Clock className="h-3 w-3" />
                   <span className="font-medium">{order.status === ServiceOrderStatus.FINISHED ? "Saída:" : "Saída prevista:"}</span>
-                  <span>{(order.predictedExitDate && formatDate(order.predictedExitDate)) || "Não informada."}</span>
+                  <span>{(order.exitDate && formatDate(order.exitDate)) || "Não informada."}</span>
                 </p>
               </div>
             </div>

@@ -3,7 +3,6 @@ import { Service } from "./service-order";
 export enum EmployeeRole {
   ATTENDANT = "Atendente",
   MECHANIC = "Mecânico",
-  ADMIN = "Administrador",
 }
 
 export type Employee = {
@@ -17,3 +16,17 @@ export type Employee = {
   role: EmployeeRole | string;
   services: Service[];
 };
+
+export interface ProductivityRankingItem {
+  employeeId: string;
+  employeeName: string;
+  serviceCount: number;
+}
+
+export interface EmployeeStats {
+  totalActiveEmployees: number;
+  currentWeeklyPayroll: number;
+  totalWeeklyCommission: number;
+  productivityRanking: ProductivityRankingItem[];
+  totalServiceValue: number;
+}

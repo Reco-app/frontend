@@ -80,12 +80,11 @@ export function PartForm({ initialData, onSubmit, isPending }: PartFormProps) {
 
   const handleFormSubmit = (values: z.infer<typeof formSchema>) => {
     const { ...dataForBackend } = values;
-    console.log(dataForBackend);
     onSubmit(dataForBackend);
   };
 
   if (isLoadingCars && !isGeneralUse) {
-    return <Spinner message="Carregando lista de carros..." />;
+    return <Spinner />;
   }
 
   return (

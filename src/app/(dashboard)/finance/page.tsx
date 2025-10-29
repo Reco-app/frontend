@@ -48,7 +48,7 @@ export default function FinancePage() {
     },
   ];
 
-  if (isLoading) return <Spinner message="Carregando dados financeiros..." />;
+  if (isLoading) return <Spinner />;
   if (isError)
     return (
       <div className="container mx-auto py-10 text-center text-destructive">

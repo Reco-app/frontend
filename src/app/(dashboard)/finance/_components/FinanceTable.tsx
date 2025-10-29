@@ -70,7 +70,7 @@ export function FinanceTable<TData extends { id: string }>({
               {isLoading ? (
                 <TableRow>
                   <TableCell colSpan={columns.length} className="h-48 text-center">
-                    <Spinner message="Carregando..." />
+                    <Spinner />
                   </TableCell>
                 </TableRow>
               ) : paginatedData.length > 0 ? (

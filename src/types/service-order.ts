@@ -52,8 +52,7 @@ export interface Payment {
 export interface ServiceOrder {
   id: string;
   entryDate: string;
-  predictedExitDate?: string;
-  actualExitDate?: string;
+  exitDate?: string;
   problemDescription?: string;
   status: ServiceOrderStatus;
   totalAmount?: number;

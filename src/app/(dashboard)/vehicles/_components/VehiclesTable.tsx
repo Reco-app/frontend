@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { vehicleService } from "@/services/vehicle.service";
 import { toast } from "sonner";
 import { renderCell } from "@/lib/helpers";
+import Spinner from "@/components/Spinner";
 
 const columns: ColumnDef<Vehicle>[] = [
   {
@@ -83,7 +84,7 @@ export function VehiclesTable() {
         {seedMutation.isPending ? (
           <>
             <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-            Sincronizando...
+            <Spinner />
           </>
         ) : (
           <>

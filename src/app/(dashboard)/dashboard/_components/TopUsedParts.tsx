@@ -9,7 +9,6 @@ import { ArrowRight, Package } from "lucide-react";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
-import { formatCurrency } from "@/lib/formatters";
 
 interface TopUsedPartsCardProps {
   parts?: TopUsedPartItem[];
@@ -23,8 +22,6 @@ export function TopUsedPartsCard({ parts = [], totalAmount, isLoading = false }:
   const handleViewInventoryClick = () => {
     router.push("/inventory");
   };
-
-  console.log(totalAmount);
 
   return (
     <Card>

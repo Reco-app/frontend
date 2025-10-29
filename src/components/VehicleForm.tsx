@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { useQuery } from '@tanstack/react-query';
+import * as React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useQuery } from "@tanstack/react-query";
 
-import api from '@/lib/api';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import Spinner from '@/components/Spinner';
-import { SelectInput } from './SelectInput';
+import api from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import Spinner from "@/components/Spinner";
+import { SelectInput } from "./SelectInput";
 
 interface VehicleFormProps {
   customerId: string;
@@ -25,31 +25,31 @@ interface FipeCar {
 }
 
 const formSchema = z.object({
-  plate: z.string().min(7, { message: 'A placa deve ter no mínimo 7 caracteres.' }),
-  carBrand: z.string().min(1, { message: 'Selecione uma marca.' }),
-  carModel: z.string({ message: 'Selecione um modelo.' }),
+  plate: z.string().min(7, { message: "A placa deve ter no mínimo 7 caracteres." }),
+  carBrand: z.string().min(1, { message: "Selecione uma marca." }),
+  carModel: z.string({ message: "Selecione um modelo." }),
   color: z.string().optional(),
   year: z.transform(Number).pipe(
     z
       .number()
-      .min(1950, { message: 'Ano inválido.' })
-      .max(new Date().getFullYear() + 1, { message: 'Ano não pode ser no futuro.' }),
+      .min(1950, { message: "Ano inválido." })
+      .max(new Date().getFullYear() + 1, { message: "Ano não pode ser no futuro." })
   ),
 });
 
 const fetchFipeCars = async (): Promise<FipeCar[]> => {
-  const { data } = await api.get('/cars');
+  const { data } = await api.get("/cars");
   return data;
 };
 
 export function VehicleForm({ customerId, onSubmit, isPending }: VehicleFormProps) {
   const form = useForm<z.output<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { plate: '', color: '', year: 0 },
+    defaultValues: { plate: "", color: "", year: 0 },
   });
 
   const { data: fipeCars, isLoading: isLoadingCars } = useQuery<FipeCar[]>({
-    queryKey: ['fipeCars'],
+    queryKey: ["fipeCars"],
     queryFn: fetchFipeCars,
   });
 
@@ -59,14 +59,14 @@ export function VehicleForm({ customerId, onSubmit, isPending }: VehicleFormProp
     return Array.from(brandSet).map((brand) => ({ label: brand, value: brand }));
   }, [fipeCars]);
 
-  const watchedBrand = form.watch('carBrand');
+  const watchedBrand = form.watch("carBrand");
   const models = React.useMemo(() => {
     if (!fipeCars || !watchedBrand) return [];
     return fipeCars.filter((car) => car.brand === watchedBrand).map((car) => ({ label: car.model, value: car.model }));
   }, [fipeCars, watchedBrand]);
 
   React.useEffect(() => {
-    form.resetField('carModel');
+    form.resetField("carModel");
   }, [watchedBrand, form]);
 
   if (isLoadingCars) {
@@ -163,7 +163,7 @@ export function VehicleForm({ customerId, onSubmit, isPending }: VehicleFormProp
         </div>
 
         <Button type="submit" disabled={isPending} className="mt-2 w-full">
-          {isPending ? <Spinner message="Adicionando..." /> : 'Adicionar Veículo'}
+          {isPending ? <Spinner /> : "Adicionar Veículo"}
         </Button>
       </form>
     </Form>

@@ -1,9 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatCard } from "@/components/StatCard";
 import { TrendingUp, BanknoteArrowUp, Clock, Users, TrendingDown, Package, ChartNoAxesColumnIncreasing, ChartPie } from "lucide-react";
@@ -15,21 +12,8 @@ import { ExpensesPieChart } from "./_components/ExpensesPieChart";
 import { RecentServiceOrdersCard } from "./_components/RecentServiceOrdersCard";
 import { TopUsedPartsCard } from "./_components/TopUsedParts";
 
-const PlaceholderList = ({ title }: { title: string }) => (
-  <Card>
-    <CardHeader className="flex flex-row items-center justify-between pb-2">
-      <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      <Button variant="ghost" size="sm" className="text-xs h-auto py-0 px-2">
-        Ver todos
-      </Button>
-    </CardHeader>
-    <CardContent className="h-40 flex items-center justify-center text-muted-foreground">(Lista de {title})</CardContent>
-  </Card>
-);
-
 export default function DashboardPage() {
   const { dashboardData, isLoading, isError, currentPeriod, changePeriod } = useDashboard();
-  const router = useRouter();
 
   if (isError)
     return (
@@ -41,9 +25,6 @@ export default function DashboardPage() {
   const generalData = dashboardData?.general;
   const financialData = dashboardData?.financial;
   const operationalData = dashboardData?.operational;
-  const teamData = dashboardData?.team;
-
-  console.log(dashboardData);
 
   return (
     <div className="container mx-auto py-10 space-y-6">
@@ -93,7 +74,7 @@ export default function DashboardPage() {
           isLoading={isLoading}
           icon={<Users className="text-muted-foreground h-5" />}
           growthData={generalData?.newClientsChange}
-          description={`Nos ${dashboardPeriodLabels[currentPeriod].toLowerCase()}`}
+          description={`No total`}
         />
         <StatCard
           title="OS em andamento"
@@ -107,7 +88,7 @@ export default function DashboardPage() {
           value={operationalData?.lowStockAlert?.count ?? 0}
           isLoading={isLoading}
           icon={<Package className="text-muted-foreground h-5" />}
-          description="Requer atenção"
+          description="Com estoque baixo"
           valueClass={(operationalData?.lowStockAlert?.count ?? 0) > 0 ? "text-destructive" : ""}
         />
       </div>

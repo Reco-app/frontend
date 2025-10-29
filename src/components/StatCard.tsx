@@ -4,6 +4,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency, formatPercentage } from "@/lib/formatters";
 import { TrendingDown, TrendingUp } from "lucide-react";
 
+const formatTrending = (value: number) => {
+  if (!value) {
+    return;
+  }
+
+  return (
+    <div className={`flex items-center text-xs mr-2 font-semibold ${value > 0 ? "text-green-600" : "text-red-600"}`}>
+      {`${value > 0 ? "+" : ""}${value.toLocaleString("pt-BR", { minimumFractionDigits: 1 })}%`}
+      {value > 0 ? <TrendingUp className="ml-1 h-4 w-4" /> : <TrendingDown className="ml-1 h-4 w-4" />}
+    </div>
+  );
+};
+
 interface StatCardProps {
   title: string;
   value: number | string;
@@ -55,7 +68,10 @@ export function StatCard({
           {isMonetary ? formatCurrency(value) : isPercentage ? formatPercentage(value) : value}
           {secondaryValue && <span className="text-muted-foreground text-sm font-medium ml-4">{secondaryValue}</span>}
         </div>
-        <div className="flex">{description && <p className="text-xs mt-1 text-muted-foreground">{description}</p>}</div>
+        <div className="flex">
+          {formatTrending(growthData ?? 0)}
+          {description && <p className="text-xs mt-1 text-muted-foreground">{description}</p>}
+        </div>
       </CardContent>
     </Card>
   );

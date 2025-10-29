@@ -1,26 +1,27 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { useRouter } from 'next/navigation';
-import { useMutation } from '@tanstack/react-query';
-import { jwtDecode } from 'jwt-decode';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { jwtDecode } from "jwt-decode";
 
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuthStore } from '@/stores/auth.store';
-import api from '@/lib/api';
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuthStore } from "@/stores/auth.store";
+import api from "@/lib/api";
 
-import { PresentationCarousel } from '@/components/PresentationCarousel';
-import { toast } from 'sonner';
-import { AxiosError } from 'axios';
+import { PresentationCarousel } from "@/components/PresentationCarousel";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
+import Spinner from "@/components/Spinner";
 
 const formSchema = z.object({
-  document_id: z.string().length(11, { message: 'O CPF deve ter 11 dígitos.' }),
-  password: z.string().min(6, { message: 'A senha deve ter no mínimo 6 caracteres.' }),
+  document_id: z.string().length(11, { message: "O CPF deve ter 11 dígitos." }),
+  password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
 });
 
 interface LoginResponse {
@@ -41,17 +42,17 @@ export default function LoginPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      document_id: '',
-      password: '',
+      document_id: "",
+      password: "",
     },
   });
 
   const mutation = useMutation({
     mutationFn: (data: z.infer<typeof formSchema>) => {
-      return api.post<LoginResponse>('/auth/login', data);
+      return api.post<LoginResponse>("/auth/login", data);
     },
     onSuccess: (response) => {
-      toast.success('Login realizado com sucesso!');
+      toast.success("Login realizado com sucesso!");
       const token = response.data.access_token;
       setToken(token);
 
@@ -63,15 +64,15 @@ export default function LoginPage() {
         name: decodedToken.name,
       });
 
-      router.push('/dashboard');
+      router.push("/dashboard");
     },
     onError: (error: AxiosError) => {
       const errorData = error.response?.data as { message?: string; statusCode: number };
 
       const errorMessage =
         errorData.statusCode >= 500
-          ? 'Um erro aconteceu. Por favor, tente novamente.'
-          : errorData?.message || 'CPF ou senha inválidos. Tente novamente.';
+          ? "Um erro aconteceu. Por favor, tente novamente."
+          : errorData?.message || "CPF ou senha inválidos. Tente novamente.";
       toast.error(`${errorMessage}`);
     },
   });
@@ -120,11 +121,9 @@ export default function LoginPage() {
                     </FormItem>
                   )}
                 />
-                {form.formState.errors.root && (
-                  <p className="text-destructive text-sm font-medium">{form.formState.errors.root.message}</p>
-                )}
+                {form.formState.errors.root && <p className="text-destructive text-sm font-medium">{form.formState.errors.root.message}</p>}
                 <Button type="submit" className="w-full" disabled={mutation.isPending}>
-                  {mutation.isPending ? 'Entrando...' : 'Entrar'}
+                  {mutation.isPending ? <Spinner /> : "Entrar"}
                 </Button>
               </form>
             </Form>

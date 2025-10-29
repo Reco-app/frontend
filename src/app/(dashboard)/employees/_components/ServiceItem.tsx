@@ -21,8 +21,6 @@ export default function ServiceItem({ service }: ServiceItemProps) {
     return laborCost + partsCost;
   }, [service]);
 
-  console.log(service);
-
   return (
     <AccordionItem value={service.id}>
       <AccordionTrigger className="hover:no-underline">

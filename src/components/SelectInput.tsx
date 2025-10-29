@@ -44,7 +44,7 @@ export function SelectInput({
           aria-expanded={open}
           disabled={disabled}
           className={cn(
-            "w-full justify-between bg-white hover:cursor-pointer hover:bg-white h-10 overflow-x-scroll",
+            "w-full justify-between border-0 bg-input hover:cursor-pointer h-10 overflow-x-scroll",
             "focus-visible:ring-secondary/70 focus-visible:ring-2",
             "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
             !value && "text-foreground"
