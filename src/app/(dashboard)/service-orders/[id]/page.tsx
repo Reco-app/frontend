@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BookUser, CreditCard, Edit, Wrench } from "lucide-react";
+import { ArrowLeft, BookUser, CreditCard, Download, Edit, Wrench } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/formatters";
@@ -12,6 +12,9 @@ import { useServiceOrderById } from "@/hooks/use-service-orders";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useState } from "react";
+import { toast } from "sonner";
+import api from "@/lib/api";
 
 const statusMap: Record<ServiceOrderStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   AWAITING_APPROVAL: { label: "Aguardando", variant: "outline" },
@@ -36,6 +39,8 @@ const paymentMethodMap: Record<PaymentMethod, string> = {
 };
 
 export default function ServiceOrderDetailPage() {
+  const [isLoadingPdf, setIsLoadingPdf] = useState(false);
+
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
@@ -46,6 +51,38 @@ export default function ServiceOrderDetailPage() {
   const totalAmount = order?.totalAmount ?? 0;
   const subtotal = totalAmount + (order?.discount ?? 0);
   const balance = totalAmount - totalPaid;
+
+  const handleDownloadPdf = async () => {
+    if (!id) return;
+
+    setIsLoadingPdf(true);
+    toast.info("Gerando seu PDF, aguarde...");
+
+    try {
+      const response = await api.get(`/service-orders/${id}/pdf`, {
+        responseType: "blob",
+      });
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      const filename = `OS-${id.split("-")[0]}.pdf`;
+      link.setAttribute("download", filename);
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      toast.error("Falha ao gerar o PDF. Tente novamente.");
+    } finally {
+      setIsLoadingPdf(false);
+    }
+  };
 
   if (isLoading) return <Spinner />;
   if (isError) return <div className="text-center text-destructive">Erro ao carregar os dados.</div>;
@@ -64,10 +101,16 @@ export default function ServiceOrderDetailPage() {
             </p>
           </div>
         </div>
-        <Button onClick={() => router.push(`/service-orders/${id}/edit`)}>
-          <Edit className="mr-2 h-4 w-4" />
-          Editar
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button variant="outline" onClick={handleDownloadPdf} disabled={isLoadingPdf} className="">
+            <Download />
+            {isLoadingPdf ? <Spinner /> : "Baixar PDF da OS"}
+          </Button>
+          <Button onClick={() => router.push(`/service-orders/${id}/edit`)}>
+            <Edit className="mr-2 h-4 w-4" />
+            Editar
+          </Button>
+        </div>
       </div>
 
       <Card>

@@ -41,5 +41,5 @@ export const formatDocument = (document: string) => {
 };
 
 export const capitalize = (originalString: string) => {
-  return originalString.charAt(0).toUpperCase() + originalString.slice(1);
+  return originalString.charAt(0).toUpperCase() + originalString.toLowerCase().slice(1);
 };

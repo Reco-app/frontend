@@ -84,7 +84,7 @@ export default function EmployeeDetailPage() {
               <div className="flex items-center gap-3">
                 <FileText className="text-muted-foreground h-4 w-4" />
                 <div>
-                  <p className="text-primary text-sm font-medium">N° Documento</p>
+                  <p className="text-primary text-sm font-medium">N° do documento</p>
                   <p className="text-muted-foreground text-sm">{employee?.documentId || "Não informado."}</p>
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function EmployeeDetailPage() {
               <div className="flex items-center gap-3">
                 <Phone className="text-muted-foreground h-4 w-4" />
                 <div>
-                  <p className="text-primary text-sm font-medium">N° Telefone</p>
+                  <p className="text-primary text-sm font-medium">N° de telefone</p>
                   <p className="text-muted-foreground text-sm">{employee?.phone}</p>
                 </div>
               </div>

@@ -27,8 +27,10 @@ export default function ServiceItem({ service }: ServiceItemProps) {
         <div className="flex items-center justify-between w-full pr-4">
           <div className="flex items-center gap-3">
             <div className="text-left font-medium">
-              <span className="text-primary/70 border-r-3 border-primary/20 pr-2 text-xs">OS #{service.id.split("-")[0]}</span>
-              <span className="text-primary pl-2">{capitalize(service.name)}</span>
+              <span className="text-primary/70 border-r-3 border-primary/20 pr-2 text-xs">
+                OS #{service.id.split("-")[0].toUpperCase()}
+              </span>
+              <span className="text-primary font-semibold pl-2">{capitalize(service.name)}</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
