@@ -5,6 +5,7 @@ import { Customer } from "@/types/customer";
 import { CustomerForm } from "./CustomerForm";
 import { DataTable } from "@/components/DataTable";
 import { useCustomer } from "@/hooks/use-customers";
+import ErrorPage from "@/components/Error";
 
 const columns: ColumnDef<Customer>[] = [
   {
@@ -20,6 +21,7 @@ const columns: ColumnDef<Customer>[] = [
   {
     accessorKey: "phone",
     header: "Telefone",
+    enableSorting: false,
   },
   {
     accessorKey: "email",
@@ -32,7 +34,7 @@ export function CustomersTable() {
   const { customers, isLoading, isError, createMutation, updateMutation, deleteMutation } = useCustomer();
 
   if (isError) {
-    return <span>Não foi possível obter as informações dos cliente.</span>;
+    return <ErrorPage />;
   }
 
   return (

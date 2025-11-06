@@ -7,15 +7,17 @@ import { formatCurrency } from "@/lib/formatters";
 import { Skeleton } from "@/components/ui/skeleton";
 import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#ff4d4d", "#4ddbff", "#ffcc00"];
+
 interface ExpensesPieChartProps {
   data: ExpensesByCategoryItem[];
   isLoading?: boolean;
 }
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#ff4d4d", "#4ddbff", "#ffcc00"];
-
 export function ExpensesPieChart({ data, isLoading }: ExpensesPieChartProps) {
   const totalExpenses = React.useMemo(() => data.reduce((sum, item) => sum + item.total, 0), [data]);
+
+  if (data.length === 0) return <span>Nenhuma despesa cadastrada para o período.</span>;
 
   if (isLoading) return <Skeleton className="h-60 w-full rounded-full" />;
 

@@ -8,9 +8,11 @@ import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { useEmployeeStats } from "@/hooks/use-employees";
 import { useRouter } from "next/navigation";
+import { PeriodSelector } from "@/components/PeriodSelector";
+import { StatsPeriod } from "@/types/service-order";
 
 export function EmployeeProductivityRanking() {
-  const { isLoadingStats: isLoading, employeeStatsData: data } = useEmployeeStats();
+  const { isLoadingStats: isLoading, employeeStatsData: data, changePeriod } = useEmployeeStats();
   const router = useRouter();
 
   const productivityRanking = data?.productivityRanking ?? [];
@@ -27,6 +29,9 @@ export function EmployeeProductivityRanking() {
           <CardDescription>Funcionários com mais serviços no período</CardDescription>
         </div>
       </CardHeader>
+      <div className="px-4">
+        <PeriodSelector onSelectPeriod={(v) => changePeriod(v as StatsPeriod)} />
+      </div>
       <CardContent>
         {isLoading ? (
           <div className="space-y-3 pt-2">
@@ -61,7 +66,7 @@ export function EmployeeProductivityRanking() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground text-center py-10">Nenhuma peça utilizada registrada no período selecionado.</p>
+          <p className="text-sm text-muted-foreground text-center py-10">Nenhum serviço realizado no período selecionado.</p>
         )}
       </CardContent>
     </Card>

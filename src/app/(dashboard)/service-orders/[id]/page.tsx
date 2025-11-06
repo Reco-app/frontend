@@ -7,7 +7,7 @@ import { ArrowLeft, BookUser, CreditCard, Download, Edit, Wrench } from "lucide-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/formatters";
-import { PaymentMethod, PaymentStatus, ServiceOrderStatus } from "@/types/service-order";
+import { PaymentMethod } from "@/types/service-order";
 import { useServiceOrderById } from "@/hooks/use-service-orders";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
@@ -15,20 +15,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useState } from "react";
 import { toast } from "sonner";
 import api from "@/lib/api";
-
-const statusMap: Record<ServiceOrderStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  AWAITING_APPROVAL: { label: "Aguardando", variant: "outline" },
-  APPROVED: { label: "Aprovada", variant: "secondary" },
-  IN_PROGRESS: { label: "Em Andamento", variant: "default" },
-  FINISHED: { label: "Finalizada", variant: "default" },
-  CANCELED: { label: "Cancelada", variant: "destructive" },
-};
-
-const paymentStatusMap: Record<PaymentStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  PENDING: { label: "Pendente", variant: "destructive" },
-  PARTIAL: { label: "Parcial", variant: "outline" },
-  PAID: { label: "Confirmado", variant: "default" },
-};
+import { paymentStatusMap, statusMap } from "@/lib/helpers";
 
 const paymentMethodMap: Record<PaymentMethod, string> = {
   CREDIT_CARD: "Cartão de Crédito",

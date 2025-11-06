@@ -9,16 +9,10 @@ import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/formatters";
-import { PaymentStatus } from "@/types/service-order";
 import { ReceivableItem, RecentExpenseItem } from "@/types/finance";
 import { cn } from "@/lib/utils";
 import { FinanceTable, FinanceTableColumn } from "./_components/FinanceTable";
-
-const paymentStatusMap: Record<PaymentStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  PENDING: { label: "Pendente", variant: "destructive" },
-  PARTIAL: { label: "Parcial", variant: "outline" },
-  PAID: { label: "Confirmado", variant: "default" },
-};
+import { paymentStatusMap } from "@/lib/helpers";
 
 export default function FinancePage() {
   const { dashboardData, isLoading, isError } = useFinanceDashboard();

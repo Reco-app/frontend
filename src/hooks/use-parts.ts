@@ -4,6 +4,10 @@ import { partService } from "@/services/part.service";
 
 const PARTS_QUERY_KEY = ["parts"];
 
+const showError = (err: any) => {
+  toast.error(`Erro! ${err.message}`);
+};
+
 export const useParts = () => {
   const queryClient = useQueryClient();
 
@@ -16,18 +20,19 @@ export const useParts = () => {
     queryFn: partService.getAll,
   });
 
-  const { data: lowStockSummary } = useQuery({
-    queryKey: ["parts", "lowStockSummary"],
-    queryFn: partService.getLowStockSummary,
+  const { data: stockSummary } = useQuery({
+    queryKey: ["parts", "summary"],
+    queryFn: partService.getStockSummary,
   });
 
   const createMutation = useMutation({
     mutationFn: partService.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PARTS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ["parts", "summary"] });
       toast.success("Peça criada com sucesso.");
     },
-    onError: (err: any) => toast.error(err.response?.data?.message ?? "Falha ao criar peça."),
+    onError: showError,
   });
 
   const updateMutation = useMutation({
@@ -37,19 +42,21 @@ export const useParts = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PARTS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ["parts", "summary"] });
       toast.success("Peça atualizada com sucesso.");
     },
-    onError: (err: any) => toast.error(err.response?.data?.message ?? "Falha ao criar peça."),
+    onError: showError,
   });
 
   const deleteMutation = useMutation({
     mutationFn: partService.remove,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PARTS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ["parts", "summary"] });
       toast.success("Peça removida com sucesso.");
     },
-    onError: (err: any) => toast.error(err.response?.data?.message ?? "Falha ao criar peça."),
+    onError: showError,
   });
 
-  return { parts, isLoading, isError, lowStockSummary, createMutation, updateMutation, deleteMutation };
+  return { parts, isLoading, isError, stockSummary, createMutation, updateMutation, deleteMutation };
 };

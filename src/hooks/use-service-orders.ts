@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { serviceOrderService } from "@/services/service-order.service";
+import { StatsPeriod } from "@/types/service-order";
 
 const SO_QUERY_KEY = ["serviceOrders"];
 
@@ -42,4 +43,25 @@ export const useServiceOrderMutations = () => {
   });
 
   return { createMutation, updateMutation };
+};
+
+export const useServiceOrderKpis = (period: StatsPeriod) => {
+  return useQuery({
+    queryKey: [...SO_QUERY_KEY, "stats", "kpi", period],
+    queryFn: () => serviceOrderService.getKpiSummary(period),
+  });
+};
+
+export const useMostUsedServices = (period: StatsPeriod) => {
+  return useQuery({
+    queryKey: [...SO_QUERY_KEY, "stats", "most-used-services", period],
+    queryFn: () => serviceOrderService.getMostUsedServices(period),
+  });
+};
+
+export const useServicesPerVehicle = (period: StatsPeriod) => {
+  return useQuery({
+    queryKey: [...SO_QUERY_KEY, "stats", "services-per-vehicle", period],
+    queryFn: () => serviceOrderService.getServicesPerVehicle(period),
+  });
 };

@@ -83,7 +83,6 @@ export function DataTable<TData>({
 
   const tableColumns = React.useMemo<ColumnDef<TData>[]>(
     () => [
-      ...columns,
       ...(actions
         ? [
             {
@@ -112,6 +111,7 @@ export function DataTable<TData>({
             },
           ]
         : []),
+      ...columns,
     ],
     [columns, viewDetailsRoute, router, onEdit, actions, deleteMutation]
   );
@@ -188,12 +188,23 @@ export function DataTable<TData>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={(row.original as any).id} data-state={row.getIsSelected() && "selected"}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="px-8" key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
+                <TableRow
+                  key={(row.original as any).id}
+                  data-state={row.getIsSelected() && "selected"}
+                  onClick={viewDetailsRoute ? () => router.push(`${viewDetailsRoute}/${(row.original as any).id}`) : () => {}}
+                  className="hover:cursor-pointer"
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <TableCell className="px-8" key={cell.id}>
+                        {cell.column.id === "actions" || cell.getValue() ? (
+                          flexRender(cell.column.columnDef.cell, cell.getContext())
+                        ) : (
+                          <span>N/A</span>
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))
             ) : (

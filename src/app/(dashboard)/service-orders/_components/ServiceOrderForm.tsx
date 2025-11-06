@@ -27,6 +27,7 @@ import { shouldBePositiveNumberMessage, isRequiredFieldMessage } from "@/lib/sch
 import { Separator } from "@/components/ui/separator";
 import OptionalBadge from "@/components/OptionalBadge";
 import { toast } from "sonner";
+import { statusMap } from "@/lib/helpers";
 
 const formSchema = z.object({
   customerId: z.uuid("Selecione um cliente."),
@@ -71,14 +72,6 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
-
-const statusMap: Record<ServiceOrderStatus, { label: string }> = {
-  AWAITING_APPROVAL: { label: "Aguardando Aprovação" },
-  APPROVED: { label: "Aprovada" },
-  IN_PROGRESS: { label: "Em Andamento" },
-  FINISHED: { label: "Finalizada" },
-  CANCELED: { label: "Cancelada" },
-};
 
 interface GeneralInfoSectionProps {
   form: UseFormReturn<FormValues>;

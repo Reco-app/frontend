@@ -179,7 +179,7 @@ export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormP
                       <OptionalBadge />
                     </FormLabel>
                     <FormControl>
-                      <div className="focus-within:ring-secondary/100 flex items-center rounded-md bg-input pr-4 shadow-xs focus-within:ring-[1px]">
+                      <div className="focus-within:ring-secondary/100 border-2 flex items-center rounded-md bg-input pr-4 shadow-xs focus-within:ring-[1px]">
                         <Input
                           className="border-0 bg-none shadow-none focus-visible:ring-[0px]"
                           placeholder="00000-000"

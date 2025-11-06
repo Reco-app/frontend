@@ -26,6 +26,8 @@ export default function DashboardPage() {
   const financialData = dashboardData?.financial;
   const operationalData = dashboardData?.operational;
 
+  console.log(dashboardData);
+
   return (
     <div className="container mx-auto py-10 space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -42,7 +44,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-5 lg:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1">
         <StatCard
           title="Receita Total"
           value={financialData?.totalRevenue ?? 0}
@@ -75,13 +77,6 @@ export default function DashboardPage() {
           icon={<Users className="text-muted-foreground h-5" />}
           growthData={generalData?.newClientsChange}
           description={`No total`}
-        />
-        <StatCard
-          title="OS em andamento"
-          value={operationalData?.inProgressOrdersCount ?? 0}
-          isLoading={isLoading}
-          icon={<Clock className="text-muted-foreground h-5" />}
-          description="Aguardando / Em progresso"
         />
         <StatCard
           title="Estoque Crítico"

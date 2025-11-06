@@ -61,7 +61,7 @@ export default function ServiceItem({ service }: ServiceItemProps) {
               </div>
             </div>
 
-            {service.partsUsed.length && (
+            {service.partsUsed.length > 0 && (
               <div>
                 <div className="flex items-center text-muted-foreground">
                   <Wrench className="w-4 h-4 mr-2" />

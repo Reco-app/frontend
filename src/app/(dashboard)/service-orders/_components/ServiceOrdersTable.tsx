@@ -7,20 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/formatters";
 import { useServiceOrders } from "@/hooks/use-service-orders";
 import { DataTable } from "@/components/DataTable";
-
-const statusMap: Record<ServiceOrderStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  AWAITING_APPROVAL: { label: "Aguardando", variant: "outline" },
-  APPROVED: { label: "Aprovada", variant: "secondary" },
-  IN_PROGRESS: { label: "Em Andamento", variant: "outline" },
-  FINISHED: { label: "Finalizada", variant: "secondary" },
-  CANCELED: { label: "Cancelada", variant: "destructive" },
-};
-
-const paymentStatusMap: Record<PaymentStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  PENDING: { label: "Pendente", variant: "destructive" },
-  PARTIAL: { label: "Parcial", variant: "outline" },
-  PAID: { label: "Pago", variant: "secondary" },
-};
+import { paymentStatusMap, statusMap } from "@/lib/helpers";
 
 const EmptyFormComponent = () => null;
 

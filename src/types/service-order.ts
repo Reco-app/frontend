@@ -24,6 +24,12 @@ export enum PaymentMethod {
   BANK_TRANSFER = "BANK_TRANSFER",
 }
 
+export enum StatsPeriod {
+  WEEK = "WEEK",
+  MONTH = "MONTH",
+  ALL = "ALL",
+}
+
 export interface PartOnService {
   quantityUsed: number;
   part: Part;
@@ -66,4 +72,20 @@ export interface ServiceOrder {
   payments: Payment[];
 
   paymentStatus: PaymentStatus;
+}
+
+export interface ServiceOrderKpiDto {
+  totalOrders: number;
+  totalRevenue: number;
+  averageTicket: number;
+}
+
+export interface MostUsedServiceDto {
+  serviceName: string;
+  count: number;
+}
+
+export interface ServicesPerVehicleDto {
+  vehicleName: string;
+  count: number;
 }

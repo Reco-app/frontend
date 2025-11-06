@@ -44,14 +44,14 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: "Funcionários",
-    url: "/employees",
-    icon: IdCardLanyard,
-  },
-  {
     title: "Clientes",
     url: "/customers",
     icon: Users,
+  },
+  {
+    title: "Funcionários",
+    url: "/employees",
+    icon: IdCardLanyard,
   },
   {
     title: "Veículos",

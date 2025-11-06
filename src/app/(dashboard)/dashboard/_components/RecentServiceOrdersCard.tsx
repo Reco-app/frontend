@@ -8,16 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RecentServiceOrderItem } from "@/types/dashboard";
 import { ArrowRight, ScrollText } from "lucide-react";
-import { ServiceOrderStatus } from "@/types/service-order";
 import { formatCurrency, formatDate } from "@/lib/formatters";
-
-const statusMap: Record<ServiceOrderStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  AWAITING_APPROVAL: { label: "Aguardando", variant: "outline" },
-  APPROVED: { label: "Aprovada", variant: "secondary" },
-  IN_PROGRESS: { label: "Em Andamento", variant: "default" },
-  FINISHED: { label: "Finalizada", variant: "default" },
-  CANCELED: { label: "Cancelada", variant: "destructive" },
-};
+import { statusMap } from "@/lib/helpers";
 
 interface RecentServiceOrdersCardProps {
   orders?: RecentServiceOrderItem[];

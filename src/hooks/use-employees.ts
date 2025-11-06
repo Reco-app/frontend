@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { EmployeeDataPeriod, employeeService } from "@/services/employee.service";
+import { employeeService } from "@/services/employee.service";
 import React from "react";
+import { StatsPeriod } from "@/types/service-order";
 
 const EMPLOYEES_QUERY_KEY = ["employees"];
 
@@ -12,7 +13,7 @@ const showError = (err: any) => {
 const DASHBOARD_KEY = ["employee-stats"];
 
 export const useEmployeeStats = () => {
-  const [period, setPeriod] = React.useState<EmployeeDataPeriod>(EmployeeDataPeriod.LAST_7_DAYS);
+  const [period, setPeriod] = React.useState<StatsPeriod>(StatsPeriod.WEEK);
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: [...DASHBOARD_KEY, period],
@@ -20,7 +21,7 @@ export const useEmployeeStats = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const changePeriod = (newPeriod: EmployeeDataPeriod) => {
+  const changePeriod = (newPeriod: StatsPeriod) => {
     setPeriod(newPeriod);
   };
 

@@ -43,7 +43,7 @@ export default function VehicleDetailPage() {
           <ArrowLeft className="h-8 w-8" />
         </Button>
         <div>
-          <h1 className="text-primary mb-1 text-2xl font-bold">Veículo #{vehicle?.id.split("-")[0]}</h1>
+          <h1 className="text-primary mb-1 text-2xl font-bold">Veículo #{vehicle?.plate}</h1>
           <p className="text-muted-foreground">Detalhes e histórico do veículo</p>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function VehicleDetailPage() {
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-primary">
                 <CarFront className="h-5 w-5" />
                 Informações do veículo
               </CardTitle>

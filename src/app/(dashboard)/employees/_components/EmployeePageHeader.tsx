@@ -12,7 +12,10 @@ export default function EmployeePageHeader() {
   const monthlyPayroll = getWeeksInMonth(new Date()) * (data?.currentWeeklyPayroll ?? 0);
   return (
     <>
-      <h1 className="text-xl font-semibold text-primary mb-8">Gerenciamento de funcionários</h1>
+      <div className="my-8">
+        <h1 className="text-2xl font-bold text-primary">Gerencimento de funcionários</h1>
+        <p className="text-muted-foreground">Obtenha informações e realize o controle da equipe</p>
+      </div>
       <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-4">
         <StatCard
           title="Funcionários ativos"
