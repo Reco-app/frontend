@@ -35,7 +35,6 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameT
       </div>
     );
   }
-
   return null;
 };
 

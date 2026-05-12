@@ -73,7 +73,7 @@ export function TopUsedPartsCard({ parts = [], totalAmount, isLoading = false }:
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground text-center py-10">Nenhuma peça utilizada registrada no período selecionado.</p>
+          <p className="text-sm text-muted-foreground text-center py-10">Nenhuma peça utilizada registrada no período</p>
         )}
       </CardContent>
     </Card>

@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ChevronsUpDown, Plus } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronsUpDown, Plus, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -149,12 +149,15 @@ export function DataTable<TData>({
   return (
     <div className="w-full">
       <div className="flex items-center justify-between py-4">
-        <Input
-          placeholder={filterPlaceholder}
-          value={(table.getColumn(filterColumnId)?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn(filterColumnId)?.setFilterValue(event.target.value)}
-          className="max-w-sm bg-input"
-        />
+        <div className="flex items-center bg-input border-border border-2 rounded-md shadow-xs">
+          <Search className="h-5 w-5 text-muted-foreground ml-4" />
+          <Input
+            placeholder={filterPlaceholder}
+            value={(table.getColumn(filterColumnId)?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn(filterColumnId)?.setFilterValue(event.target.value)}
+            className="max-w-sm bg-transparent border-0 shadow-none focus-visible:ring-0"
+          />
+        </div>
         <Button onClick={onCreate ? onCreate : () => setIsCreateDialogOpen(true)}>
           <Plus strokeWidth={3} className="mr-2 h-4 w-4" /> {createText}
         </Button>
@@ -195,9 +198,12 @@ export function DataTable<TData>({
                   className="hover:cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => {
+                    // Show actions column; all cells not empty and all cells with boolean value, even if false
                     return (
                       <TableCell className="px-8" key={cell.id}>
-                        {cell.column.id === "actions" || cell.getValue() ? (
+                        {cell.column.id.toLowerCase().includes("actions") ||
+                        cell.getValue() ||
+                        (!cell.getValue() && typeof cell.getValue() == "boolean") ? (
                           flexRender(cell.column.columnDef.cell, cell.getContext())
                         ) : (
                           <span>N/A</span>

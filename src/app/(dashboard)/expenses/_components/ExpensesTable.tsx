@@ -32,15 +32,8 @@ const columns: ColumnDef<Expense>[] = [
     header: "Tipo",
     cell: ({ row }) => {
       const isRecurring = row.getValue("isRecurring");
-      return <Badge variant={isRecurring ? "secondary" : "outline"}>{isRecurring ? "Recorrente (Mensal)" : "Única"}</Badge>;
+      return <Badge variant="outline">{isRecurring ? "Recorrente" : "Única"}</Badge>;
     },
-  },
-  {
-    accessorKey: "observations",
-    header: "Observações",
-    cell: ({ row }) => (
-      <span className="text-sm text-muted-foreground truncate max-w-[200px] inline-block">{row.getValue("observations") || "-"}</span>
-    ),
   },
 ];
 
@@ -52,8 +45,8 @@ export function ExpensesTable() {
       columns={columns}
       data={expenses ?? []}
       isLoading={isLoading}
-      filterColumnId="category"
-      filterPlaceholder="Filtrar por categoria..."
+      filterColumnId="name"
+      filterPlaceholder="Filtrar por nome..."
       createText="Nova Despesa"
       FormComponent={ExpenseForm}
       createMutation={createMutation}

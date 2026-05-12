@@ -13,7 +13,7 @@ export default function EmployeePageHeader() {
   return (
     <>
       <div className="my-8">
-        <h1 className="text-2xl font-bold text-primary">Gerencimento de funcionários</h1>
+        <h1 className="text-xl font-bold text-primary">Gerencimento de funcionários</h1>
         <p className="text-muted-foreground">Obtenha informações e realize o controle da equipe</p>
       </div>
       <div className="grid md:grid-cols-3 sm:grid-cols-1 gap-4">

@@ -4,17 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BanknoteArrowUp, CalendarFold, Contact, FileText, Mail, MapPin, Phone, Plus, User } from "lucide-react";
+import { Banknote, CalendarFold, Contact, FileText, Mail, MapPin, Phone, Plus, User } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Spinner from "@/components/Spinner";
 import { formatCurrency, formatDate, formatDocument, formatPhone } from "@/lib/formatters";
 import { Accordion } from "@/components/ui/accordion";
 import { Employee } from "@/types/employee";
 import ServiceItem from "../_components/ServiceItem";
-import { DetailsHeader } from "@/components/ui/DetailsHeader";
+import { DetailsHeader } from "@/components/DetailsHeader";
 import { DetailsCard, DetailsCardFieldData } from "@/components/DetailsCard";
 import EmployeeLoadingPage from "../_components/EmployeeLoadingPage";
-import ErrorPage from "@/components/Error";
+import ErrorPage from "@/components/ErrorPage";
 
 const fetchEmployeeById = async (id: string): Promise<Employee> => {
   const { data } = await api.get(`/employees/${id}`);
@@ -30,6 +29,7 @@ export default function EmployeeDetailPage() {
   const {
     data: employee,
     isLoading,
+    refetch,
     isError,
   } = useQuery<Employee>({
     queryKey: ["employee", employeeId],
@@ -51,7 +51,7 @@ export default function EmployeeDetailPage() {
     {
       label: "Salário",
       value: formatCurrency(employee?.salary ?? 0) || "Não informado",
-      icon: <Mail className="text-muted-foreground h-4 w-4" />,
+      icon: <Banknote className="text-muted-foreground h-4 w-4" />,
     },
     {
       label: "N° do telefone",
@@ -73,7 +73,7 @@ export default function EmployeeDetailPage() {
   ];
 
   if (isLoading) return <EmployeeLoadingPage />;
-  if (isError) return <ErrorPage />;
+  if (isError) return <ErrorPage onRetry={refetch} />;
 
   return (
     <div className="container mx-auto max-w-6xl p-6">

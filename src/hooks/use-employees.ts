@@ -15,7 +15,13 @@ const DASHBOARD_KEY = ["employee-stats"];
 export const useEmployeeStats = () => {
   const [period, setPeriod] = React.useState<StatsPeriod>(StatsPeriod.WEEK);
 
-  const { data, isLoading, isError, error, refetch } = useQuery({
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch: refetchStats,
+  } = useQuery({
     queryKey: [...DASHBOARD_KEY, period],
     queryFn: () => employeeService.getStats(period),
     staleTime: 1000 * 60 * 5,
@@ -29,6 +35,7 @@ export const useEmployeeStats = () => {
     employeeStatsData: data,
     isLoadingStats: isLoading,
     isError,
+    refetchStats,
     error,
     currentPeriod: period,
     changePeriod,
@@ -42,6 +49,7 @@ export const useEmployee = () => {
     data: employees,
     isLoading,
     isError,
+    refetch: refetchData,
   } = useQuery({
     queryKey: EMPLOYEES_QUERY_KEY,
     queryFn: employeeService.getAll,
@@ -78,6 +86,7 @@ export const useEmployee = () => {
     employees,
     isLoading,
     isError,
+    refetchData,
     createMutation,
     updateMutation,
     deleteMutation,

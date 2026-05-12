@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { formatCurrency, formatDate } from "@/lib/formatters";
+import { formatCurrency, formatDate, formatPhone } from "@/lib/formatters";
 import { ServiceOrder, PaymentMethod, ServiceOrderStatus } from "@/types/service-order";
 import { useParts } from "@/hooks/use-parts";
 import { useEmployee } from "@/hooks/use-employees";
@@ -28,6 +28,8 @@ import { Separator } from "@/components/ui/separator";
 import OptionalBadge from "@/components/OptionalBadge";
 import { toast } from "sonner";
 import { statusMap } from "@/lib/helpers";
+import { ServiceOrderFormSkeleton } from "./ServiceOrderFormSkeleton";
+import { MonetaryInput } from "@/components/MonetaryInput";
 
 const formSchema = z.object({
   customerId: z.uuid("Selecione um cliente."),
@@ -85,7 +87,7 @@ function GeneralInfoSection({ form, customers, vehicleOptions, watchedCustomerId
     <Card>
       <CardHeader>
         <div className="flex items-center text-primary">
-          <FileUser className="mr-2" />
+          <FileUser className="mr-2 h-5 w-5" />
           <CardTitle>Informações Gerais</CardTitle>
         </div>
       </CardHeader>
@@ -98,7 +100,10 @@ function GeneralInfoSection({ form, customers, vehicleOptions, watchedCustomerId
               <FormItem>
                 <FormLabel>Cliente</FormLabel>
                 <FormControl>
-                  <SelectInput options={customers?.map((c) => ({ label: `${c.name} | ${c.phone}`, value: c.id })) ?? []} {...field} />
+                  <SelectInput
+                    options={customers?.map((c) => ({ label: `${c.name} | ${formatPhone(c.phone)}`, value: c.id })) ?? []}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -128,7 +133,7 @@ function GeneralInfoSection({ form, customers, vehicleOptions, watchedCustomerId
                 <OptionalBadge />
               </FormLabel>
               <FormControl>
-                <Textarea placeholder="Ex: Barulho na suspensão, luz de injeção acesa..." {...field} />
+                <Textarea className="bg-input" placeholder="Ex: Barulho na suspensão, luz de injeção acesa..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -142,7 +147,7 @@ function GeneralInfoSection({ form, customers, vehicleOptions, watchedCustomerId
               <FormItem className="flex flex-col">
                 <FormLabel>Data de Entrada</FormLabel>
                 <Popover>
-                  <PopoverTrigger asChild className="bg-white h-10">
+                  <PopoverTrigger asChild className="bg-input h-10">
                     <FormControl>
                       <Button variant="outline" className={cn(!field.value && "text-muted-foreground")}>
                         {field.value ? formatDate(field.value.toISOString()) : <span className="font-normal">Selecione a data</span>}
@@ -167,7 +172,7 @@ function GeneralInfoSection({ form, customers, vehicleOptions, watchedCustomerId
                   Data de Saída <OptionalBadge />
                 </FormLabel>
                 <Popover>
-                  <PopoverTrigger asChild className="bg-white h-10">
+                  <PopoverTrigger asChild className="bg-input h-10">
                     <FormControl>
                       <Button variant="outline" className={cn(!field.value && "text-muted-foreground")}>
                         {field.value ? formatDate(field.value.toISOString()) : <span className="font-normal">Selecione a data</span>}
@@ -217,7 +222,7 @@ function ServicesSection({ control, employees, parts }: ServicesSectionProps) {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>
           <div className="flex items-center text-primary">
-            <Wrench className="mr-2" />
+            <Wrench className="mr-2 h-5 w-5" />
             <span className="text-md">Serviços Executados</span>
           </div>
         </CardTitle>
@@ -261,7 +266,7 @@ function FinancialSection({ form, totalAmount, totalPaid, balance }: FinancialSe
           <div className="md:col-span-2 space-y-4 pr-6 border-r-2">
             <div className="flex items-center justify-between">
               <div className="flex text-primary">
-                <CreditCard className="mr-2" />
+                <CreditCard className="mr-2 h-5 w-5" />
                 <h3 className="font-semibold">Pagamentos</h3>
               </div>
               <Button
@@ -277,7 +282,7 @@ function FinancialSection({ form, totalAmount, totalPaid, balance }: FinancialSe
               {fields.map((field, index) => {
                 const watchedPaymentMethod = form.watch(`payments.${index}.method`);
                 return (
-                  <div key={field.id} className="grid grid-cols-9 gap-2 items-start p-3 border rounded-lg bg-muted/30">
+                  <div key={field.id} className="grid grid-cols-8 gap-2 items-start p-3 border rounded-lg bg-muted/30">
                     <FormField
                       control={form.control}
                       name={`payments.${index}.method`}
@@ -302,7 +307,7 @@ function FinancialSection({ form, totalAmount, totalPaid, balance }: FinancialSe
                         <FormItem className="col-span-2">
                           <FormLabel>Valor</FormLabel>
                           <FormControl>
-                            <Input type="number" placeholder="Valor (R$)" {...field} />
+                            <MonetaryInput type="number" placeholder="Valor (R$)" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -332,7 +337,7 @@ function FinancialSection({ form, totalAmount, totalPaid, balance }: FinancialSe
                         <FormItem className="flex flex-col col-span-2">
                           <FormLabel>Realizado em</FormLabel>
                           <Popover>
-                            <PopoverTrigger asChild className="bg-white h-10">
+                            <PopoverTrigger asChild className="bg-input h-10">
                               <FormControl>
                                 <Button variant="outline" className={cn(!field.value && "text-muted-foreground")}>
                                   {field.value ? (
@@ -352,16 +357,22 @@ function FinancialSection({ form, totalAmount, totalPaid, balance }: FinancialSe
                         </FormItem>
                       )}
                     />
-
-                    <div className="col-span-1 col-start-9 flex flex-col items-center justify-end flex-1">
+                    <div className="flex flex-col col-start-9 flex-1">
                       <FormLabel className="text-transparent">Excluir</FormLabel>
-                      <Button type="button" variant="ghost" size="icon" className="hover:bg-red-100" onClick={() => remove(index)}>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="h-10 w-10 bg-red-300/30 hover:bg-red-100 ml-2"
+                        onClick={() => remove(index)}
+                      >
                         <Trash className="h-4 w-4 text-destructive" />
                       </Button>
                     </div>
                   </div>
                 );
               })}
+
               {fields.length === 0 && <p className="text-sm text-muted-foreground text-center py-16">Nenhum pagamento adicionado.</p>}
             </div>
           </div>
@@ -372,10 +383,11 @@ function FinancialSection({ form, totalAmount, totalPaid, balance }: FinancialSe
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Desconto (R$) <OptionalBadge />
+                    Desconto
+                    <OptionalBadge />
                   </FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="0.00" {...field} />
+                    <MonetaryInput type="number" placeholder="0.00" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -500,7 +512,7 @@ export function ServiceOrderForm({ initialData, onSubmit, isPending }: ServiceOr
   const balance = totalAmount - totalPaid;
 
   const isLoading = isLoadingCustomers || isLoadingVehicles || isLoadingEmployees || isLoadingParts;
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <ServiceOrderFormSkeleton />;
 
   return (
     <Form {...form}>

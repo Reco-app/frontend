@@ -25,5 +25,6 @@ export const useDashboard = () => {
     error,
     currentPeriod: period,
     changePeriod,
+    refetch,
   };
 };

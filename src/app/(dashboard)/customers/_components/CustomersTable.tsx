@@ -5,7 +5,6 @@ import { Customer } from "@/types/customer";
 import { CustomerForm } from "./CustomerForm";
 import { DataTable } from "@/components/DataTable";
 import { useCustomer } from "@/hooks/use-customers";
-import ErrorPage from "@/components/Error";
 
 const columns: ColumnDef<Customer>[] = [
   {
@@ -31,11 +30,7 @@ const columns: ColumnDef<Customer>[] = [
 ];
 
 export function CustomersTable() {
-  const { customers, isLoading, isError, createMutation, updateMutation, deleteMutation } = useCustomer();
-
-  if (isError) {
-    return <ErrorPage />;
-  }
+  const { customers, isLoading, createMutation, updateMutation, deleteMutation } = useCustomer();
 
   return (
     <DataTable

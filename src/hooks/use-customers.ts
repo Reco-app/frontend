@@ -15,6 +15,7 @@ export const useCustomer = () => {
     data: customers,
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: CUSTOMERS_QUERY_KEY,
     queryFn: customerService.getAll,
@@ -51,6 +52,7 @@ export const useCustomer = () => {
     customers,
     isLoading,
     isError,
+    refetch,
     createMutation,
     updateMutation,
     deleteMutation,

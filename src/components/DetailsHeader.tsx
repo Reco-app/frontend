@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { Button } from "./button";
+import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 interface DetailsHeaderInterface {
@@ -13,7 +13,7 @@ export function DetailsHeader({ title, description }: DetailsHeaderInterface) {
   const router = useRouter();
   return (
     <div className="flex items-center gap-4 mb-8">
-      <Button variant="ghost" size="icon" onClick={() => router.back()}>
+      <Button variant="ghost" className="hover:bg-input" size="icon" onClick={() => router.back()}>
         <ArrowLeft className="h-8 w-8" />
       </Button>
       <div>

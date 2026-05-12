@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Spinner from "@/components/Spinner";
 import { Cog, Package } from "lucide-react";
+import { PeriodSelector } from "@/components/PeriodSelector";
+import { StatsPeriod } from "@/types/service-order";
 
 export function MostUsedParts() {
   const [period, setPeriod] = useState<Period>(Period.ALL);
@@ -25,19 +27,9 @@ export function MostUsedParts() {
     <Card>
       <CardHeader className="flex flex-col items-start justify-between">
         <CardTitle className="text-sm text-primary mb-2">Peças mais utilizadas</CardTitle>
-        <Tabs defaultValue={Period.ALL} onValueChange={handlePeriodChange} className="w-[100%]">
-          <TabsList className="w-[100%] h-8">
-            <TabsTrigger className="text-xs" value={Period.WEEK}>
-              Semana
-            </TabsTrigger>
-            <TabsTrigger className="text-xs" value={Period.MONTH}>
-              Mês
-            </TabsTrigger>
-            <TabsTrigger className="text-xs" value={Period.ALL}>
-              Todo o período
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <div className="w-[100%]">
+          <PeriodSelector period={StatsPeriod.ALL} onSelectPeriod={(v) => setPeriod(v)} />
+        </div>
       </CardHeader>
       <CardContent>
         {isLoading && <Spinner />}

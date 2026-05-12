@@ -17,8 +17,13 @@ export function ServiceOrdersStats() {
 
   return (
     <div className="space-y-6 mb-2">
-      <h1 className="text-primary mb-0 text-xl font-bold">Ordens de Serviço</h1>
-      <PeriodSelector onSelectPeriod={(v) => setPeriod(v as StatsPeriod)} width="400px" />
+      <div className="flex justify-between items-center">
+        <div className="mb-4">
+          <h1 className="text-xl font-bold text-primary">Ordens de serviço</h1>
+          <p className="text-muted-foreground">Obtenha informações e cadastre novas ordens de serviço</p>
+        </div>
+        <PeriodSelector onSelectPeriod={(v) => setPeriod(v as StatsPeriod)} style="w-[320px] h-fit p-1" />
+      </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard

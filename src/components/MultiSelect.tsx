@@ -63,7 +63,7 @@ function MultiSelect({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           className={cn(
-            "flex h-12 px-2 w-full shadow-xs transition-all items-center justify-between rounded-md border border-input bg-input text-sm",
+            "flex h-12 px-2 w-full shadow-xs transition-all items-center justify-between rounded-md border border-border bg-input text-sm",
             "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
             "disabled:cursor-not-allowed disabled:opacity-50 outline-0"
           )}

@@ -8,8 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth.store";
 import api from "@/lib/api";
@@ -18,9 +17,12 @@ import { PresentationCarousel } from "@/components/PresentationCarousel";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import Spinner from "@/components/Spinner";
+import logo from "../../../public/logo-2.svg";
+import Image from "next/image";
+import { FloatingInput } from "@/components/FloatingInput";
 
 const formSchema = z.object({
-  document_id: z.string().length(11, { message: "O CPF deve ter 11 dígitos." }),
+  identifier: z.string().length(11, { message: "O CPF deve ter 11 dígitos." }),
   password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
 });
 
@@ -42,7 +44,7 @@ export default function LoginPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      document_id: "",
+      identifier: "",
       password: "",
     },
   });
@@ -82,53 +84,40 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
-      <div className="flex h-[480px] w-full max-w-3xl rounded-xl shadow-2xl">
-        <div className="bg-primary flex w-1/2 items-center justify-center rounded-l-xl">
+    <main className="flex h-screen items-center justify-center p-3">
+      <div className="flex w-full h-full justify-between">
+        <Card className="flex flex-1 h-full flex-col justify-center items-center border-none shadow-none px-2 rounded-xl">
+          <div className="flex flex-col w-full max-w-md">
+            <CardHeader className="flex flex-col items-center mb-6">
+              <Image src={logo} alt="Recoapp" width={80} />
+              <CardTitle className="text-2xl text-center text-primary mt-2">Faça o seu login</CardTitle>
+              <CardDescription className="text-center">Insira suas credenciais para acessar o sistema</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <FloatingInput label="CPF" {...form.register("identifier")} error={form.formState.errors?.identifier} />
+                  <FloatingInput label="Senha" type="password" {...form.register("password")} error={form.formState.errors?.password} />
+                  {form.formState.errors.root && (
+                    <p className="text-destructive text-sm font-medium">{form.formState.errors.root.message}</p>
+                  )}
+                  <div className="w-full text-right">
+                    <Button className="p-0" variant="link" onClick={() => console.log("TODO: Reset password page")}>
+                      <span className="text-primary text-sm font-medium">Esqueceu sua senha?</span>
+                    </Button>
+                  </div>
+                  <Button type="submit" className="py-5 rounded-xl font-bold w-full" disabled={mutation.isPending}>
+                    {mutation.isPending ? <Spinner /> : "Entrar"}
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </div>
+        </Card>
+
+        <div className="flex w-[50%] h-full rounded-2xl items-center justify-center bg-primary">
           <PresentationCarousel />
         </div>
-        <Card className="flex w-1/2 flex-col justify-center rounded-none rounded-r-xl border-0 px-2">
-          <CardHeader>
-            <CardTitle className="text-2xl">Bem vindo!</CardTitle>
-            <CardDescription>Insira suas credenciais para acessar o sistema.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="document_id"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>CPF</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Insira seu CPF" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Senha</FormLabel>
-                      <FormControl>
-                        <Input type="password" placeholder="Insira sua senha" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {form.formState.errors.root && <p className="text-destructive text-sm font-medium">{form.formState.errors.root.message}</p>}
-                <Button type="submit" className="w-full" disabled={mutation.isPending}>
-                  {mutation.isPending ? <Spinner /> : "Entrar"}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
       </div>
     </main>
   );

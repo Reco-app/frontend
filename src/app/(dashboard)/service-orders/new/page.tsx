@@ -2,6 +2,7 @@
 import { useServiceOrderMutations } from "@/hooks/use-service-orders";
 import { useRouter } from "next/navigation";
 import { ServiceOrderForm } from "../_components/ServiceOrderForm";
+import { DetailsHeader } from "@/components/DetailsHeader";
 
 export default function NewServiceOrderPage() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function NewServiceOrderPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-primary mb-4 text-2xl font-bold">Nova ordem de serviço (OS)</h1>
+      <DetailsHeader title="Nova ordem de serviço" description="Preencha os campos abaixo para criar a OS" />
       <ServiceOrderForm onSubmit={handleSubmit} isPending={createMutation.isPending} />
     </div>
   );

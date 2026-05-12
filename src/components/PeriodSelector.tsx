@@ -3,21 +3,22 @@ import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
 interface PeriodSelectorInterface {
   onSelectPeriod: (v: any) => void;
-  width?: string;
+  style?: string;
+  period?: StatsPeriod;
 }
 
-export function PeriodSelector({ onSelectPeriod, width = "100%" }: PeriodSelectorInterface) {
+export function PeriodSelector({ period = StatsPeriod.WEEK, onSelectPeriod, style = "w-[100%] h-fit p-1" }: PeriodSelectorInterface) {
   return (
-    <Tabs defaultValue={StatsPeriod.WEEK} onValueChange={onSelectPeriod} className="items-end">
-      <TabsList className={`w-[${width}] h-8`}>
-        <TabsTrigger className="text-xs h-[100%]" value={StatsPeriod.WEEK}>
-          Esta Semana
+    <Tabs defaultValue={period} onValueChange={onSelectPeriod} className="items-end">
+      <TabsList className={style}>
+        <TabsTrigger className="text-xs h-6" value={StatsPeriod.WEEK}>
+          Semana
         </TabsTrigger>
-        <TabsTrigger className="text-xs h-[100%]" value={StatsPeriod.MONTH}>
-          Este Mês
+        <TabsTrigger className="text-xs h-6" value={StatsPeriod.MONTH}>
+          Mês
         </TabsTrigger>
-        <TabsTrigger className="text-xs h-[100%]" value={StatsPeriod.ALL}>
-          Todo Período
+        <TabsTrigger className="text-xs h-6" value={StatsPeriod.ALL}>
+          Todo o período
         </TabsTrigger>
       </TabsList>
     </Tabs>

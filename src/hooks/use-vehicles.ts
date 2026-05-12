@@ -15,6 +15,7 @@ export const useVehicle = () => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: VEHICLES_QUERY_KEY,
     queryFn: vehicleService.getAll,

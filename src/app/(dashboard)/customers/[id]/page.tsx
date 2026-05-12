@@ -15,11 +15,11 @@ import { AxiosError } from "axios";
 import { formatDate, formatDocument, formatPhone } from "@/lib/formatters";
 import { Accordion } from "@/components/ui/accordion";
 import ServiceOrderItem from "@/components/ServiceOrderItem";
-import ErrorPage from "@/components/Error";
+import ErrorPage from "@/components/ErrorPage";
 import CustomerLoadingPage from "../_components/CustomerLoadingPage";
 import { CustomerVehicleCard } from "../_components/CustomerVehicleCard";
 import { DetailsCard, DetailsCardFieldData } from "@/components/DetailsCard";
-import { DetailsHeader } from "@/components/ui/DetailsHeader";
+import { DetailsHeader } from "@/components/DetailsHeader";
 
 const fetchCustomerById = async (id: string): Promise<Customer> => {
   const { data } = await api.get(`/customers/${id}`);
@@ -42,6 +42,7 @@ export default function CustomerDetailPage() {
     data: customer,
     isLoading,
     isError,
+    refetch,
   } = useQuery<Customer>({
     queryKey: ["customer", customerId],
     queryFn: () => fetchCustomerById(customerId),
@@ -101,7 +102,7 @@ export default function CustomerDetailPage() {
   ];
 
   if (isLoading) return <CustomerLoadingPage />;
-  if (isError) return <ErrorPage />;
+  if (isError) return <ErrorPage onRetry={refetch} />;
 
   return (
     <div className="container mx-auto max-w-6xl p-6">

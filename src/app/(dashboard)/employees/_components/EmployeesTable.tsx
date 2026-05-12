@@ -6,7 +6,6 @@ import { EmployeeForm } from "./EmployeeForm";
 import { formatCurrency } from "@/lib/formatters";
 import { DataTable } from "@/components/DataTable";
 import { useEmployee } from "@/hooks/use-employees";
-import ErrorPage from "@/components/Error";
 
 const columns: ColumnDef<Employee>[] = [
   { accessorKey: "name", header: "Nome Completo" },
@@ -28,11 +27,7 @@ const columns: ColumnDef<Employee>[] = [
 ];
 
 export function EmployeesTable() {
-  const { employees, isError, isLoading, createMutation, updateMutation, deleteMutation } = useEmployee();
-
-  if (isError) {
-    return <ErrorPage />;
-  }
+  const { employees, isLoading, createMutation, updateMutation, deleteMutation } = useEmployee();
 
   return (
     <DataTable

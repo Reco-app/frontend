@@ -128,7 +128,10 @@ export function ExpenseForm({ initialData, onSubmit, isPending }: ExpenseFormPro
                     <FormControl>
                       <Button
                         variant={"outline"}
-                        className={cn("bg-white h-10 hover:bg-white pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                        className={cn(
+                          "bg-input h-10 hover:bg-input/75 pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
                       >
                         {field.value ? formatDate(field.value.toString()) : <span>Selecione a data</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -149,7 +152,7 @@ export function ExpenseForm({ initialData, onSubmit, isPending }: ExpenseFormPro
           control={form.control}
           name="isRecurring"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 shadow-xs mt-6 bg-white">
+            <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 shadow-xs mt-6 bg-input">
               <div className="space-y-0.5">
                 <FormLabel>Despesa Recorrente (Mensal)?</FormLabel>
               </div>

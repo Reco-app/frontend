@@ -14,6 +14,7 @@ import { useCustomer } from "@/hooks/use-customers";
 import { useFipeCars } from "@/hooks/use-fipe-cars";
 import OptionalBadge from "@/components/OptionalBadge";
 import { invalidDateMessage } from "@/lib/schemaMessages";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formSchema = z.object({
   plate: z.string().min(7, { message: "A placa deve ter pelo menos 7 caracteres." }).max(8),
@@ -78,70 +79,92 @@ export function VehicleForm({ initialData, onSubmit, isPending }: VehicleFormPro
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="ownerId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Cliente proprietário</FormLabel>
-              <FormControl>
-                <SelectInput
-                  placeholder="Selecione o cliente"
-                  searchPlaceholder="Buscar cliente..."
-                  emptyMessage="Nenhum cliente encontrado."
-                  options={customerOptions}
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {isLoadingCustomers ? (
+          <>
+            <Skeleton className="h-4 w-[35%]" />
+            <Skeleton className="w-full h-10" />
+          </>
+        ) : (
+          <FormField
+            control={form.control}
+            name="ownerId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cliente proprietário</FormLabel>
+                <FormControl>
+                  <SelectInput
+                    placeholder="Selecione o cliente"
+                    searchPlaceholder="Buscar cliente..."
+                    emptyMessage="Nenhum cliente encontrado."
+                    options={customerOptions}
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="carBrand"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Marca</FormLabel>
-                <FormControl>
-                  <SelectInput
-                    placeholder="Selecione a marca"
-                    searchPlaceholder="Buscar marca..."
-                    emptyMessage="Nenhuma marca encontrada."
-                    options={brandOptions}
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isLoadingCars ? (
+            <>
+              <div>
+                <Skeleton className="mb-3 h-4 w-[70%]" />
+                <Skeleton className="h-10" /> <Skeleton />
+              </div>
+              <div>
+                <Skeleton className="mb-3 h-4 w-[70%]" />
+                <Skeleton className="h-10" /> <Skeleton />
+              </div>
+            </>
+          ) : (
+            <>
+              <FormField
+                control={form.control}
+                name="carBrand"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Marca</FormLabel>
+                    <FormControl>
+                      <SelectInput
+                        placeholder="Selecione a marca"
+                        searchPlaceholder="Buscar marca..."
+                        emptyMessage="Nenhuma marca encontrada."
+                        options={brandOptions}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="carModel"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Modelo</FormLabel>
-                <FormControl>
-                  <SelectInput
-                    placeholder="Selecione o modelo"
-                    searchPlaceholder="Buscar modelo..."
-                    emptyMessage="Nenhum modelo encontrado."
-                    options={modelOptions}
-                    value={field.value}
-                    onChange={field.onChange}
-                    disabled={!watchedBrand}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <FormField
+                control={form.control}
+                name="carModel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Modelo</FormLabel>
+                    <FormControl>
+                      <SelectInput
+                        placeholder="Selecione o modelo"
+                        searchPlaceholder="Buscar modelo..."
+                        emptyMessage="Nenhum modelo encontrado."
+                        options={modelOptions}
+                        value={field.value}
+                        onChange={field.onChange}
+                        disabled={!watchedBrand}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
         </div>
 
         <div className="grid grid-cols-3 gap-4">

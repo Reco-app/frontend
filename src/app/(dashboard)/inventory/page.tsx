@@ -12,11 +12,14 @@ import { useParts } from "@/hooks/use-parts";
 import { useState } from "react";
 import { StatCard } from "@/components/StatCard";
 import { MostUsedParts } from "./_components/MostUsedParts";
+import ErrorPage from "@/components/ErrorPage";
+import Spinner from "@/components/Spinner";
+import InventoryLoadingPage from "./_components/InventoryLoadingPage";
 
 export default function InventoryPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
-  const { stockSummary } = useParts();
+  const { stockSummary, isError, isLoading, refetch } = useParts();
   const queryClient = useQueryClient();
 
   const createMovementMutation = useMutation({
@@ -28,11 +31,19 @@ export default function InventoryPage() {
     onError: (err: any) => toast.error(err.response?.data?.message ?? "Falha ao registrar movimentação."),
   });
 
+  if (isLoading) return <InventoryLoadingPage />;
+  if (isError) {
+    return <ErrorPage onRetry={refetch} />;
+  }
+
   return (
     <div className="container mx-auto py-10 space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex justify-between w-[100%] items-center">
-          <h1 className="text-primary mb-4 text-xl font-bold">Gerenciamento de estoque</h1>
+          <div>
+            <h1 className="text-primary text-xl font-bold">Gerenciamento de estoque</h1>
+            <p className="text-muted-foreground">Cadastre e registre movimentações no estoque</p>
+          </div>
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" className="bg-card shadow-none h-10">

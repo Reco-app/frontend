@@ -1,8 +1,4 @@
-import { ServiceOrderStatus } from "./service-order"; // Assuming this exists
-// Assuming ReceivableItem and RecentExpenseItem are defined correctly elsewhere (like in finance.ts)
-// If not, define them here based on the backend DTOs ReceivableItemDto and RecentExpenseItemDto
-
-// --- TIPOS ANINHADOS ADICIONAIS ---
+import { ServiceOrderStatus } from "./service-order";
 
 /** Tipo para agregação de despesas por categoria */
 export interface ExpensesByCategoryItem {

@@ -9,6 +9,7 @@ import { Delete, Plus, Trash2 } from "lucide-react";
 import { Employee } from "@/types/employee";
 import { Part } from "@/types/inventory";
 import { Separator } from "@/components/ui/separator";
+import { MonetaryInput } from "@/components/MonetaryInput";
 
 interface ServiceItemProps {
   serviceIndex: number;
@@ -34,8 +35,8 @@ export function ServiceItemForm({ serviceIndex, removeService, employees, parts 
 
   return (
     <div className="p-6 border rounded-lg relative bg-muted/20">
-      <div className="flex items-center w-[100%]">
-        <div className="space-y-4 flex-1">
+      <div className="grid grid-cols-4 gap-4 w-[100%] items-baseline">
+        <div className="col-span-2">
           <FormField
             name={`services.${serviceIndex}.name`}
             control={control}
@@ -49,84 +50,94 @@ export function ServiceItemForm({ serviceIndex, removeService, employees, parts 
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-4 items-baseline">
-            <FormField
-              name={`services.${serviceIndex}.employeeId`}
-              control={control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Funcionário Responsável</FormLabel>
-                  <FormControl>
-                    <SelectInput options={employeeOptions} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name={`services.${serviceIndex}.laborCost`}
-              control={control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Custo Mão de Obra (R$)</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <Separator className="my-4" />
-          <div className="space-y-2 flex-1">
-            <h4 className="text-sm font-medium text-primary">Peças Utilizadas</h4>
-            {partFields.map((partField, partIndex) => (
-              <div key={partField.id} className="grid gap-2 grid-cols-11 items-baseline">
-                <FormField
-                  name={`services.${serviceIndex}.parts.${partIndex}.partId`}
-                  control={control}
-                  render={({ field }) => (
-                    <FormItem className="col-span-8">
-                      <FormControl>
-                        <SelectInput options={partOptions} placeholder="Selecione uma peça" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name={`services.${serviceIndex}.parts.${partIndex}.quantityUsed`}
-                  control={control}
-                  render={({ field }) => (
-                    <FormItem className="col-span-2">
-                      <FormControl>
-                        <Input type="number" placeholder="Qtd." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="button" className="col-span-1 flex-1" variant="ghost" size="icon" onClick={() => removePart(partIndex)}>
-                  <Delete />
-                </Button>
-              </div>
-            ))}
-            <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => appendPart({ partId: "", quantityUsed: 1 })}>
-              <Plus strokeWidth={3} className="mr-2 h-4 w-4" /> Adicionar Peça
+        </div>
+        <div className="col-span-1">
+          <FormField
+            name={`services.${serviceIndex}.employeeId`}
+            control={control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Funcionário Responsável</FormLabel>
+                <FormControl>
+                  <SelectInput options={employeeOptions} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="col-span-1 flex items-end">
+          <FormField
+            name={`services.${serviceIndex}.laborCost`}
+            control={control}
+            render={({ field }) => (
+              <FormItem className="w-[85%]">
+                <FormLabel>Custo Mão de Obra (R$)</FormLabel>
+                <FormControl>
+                  <MonetaryInput type="number" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="rounded-md h-10 w-10 bg-red-300/30 flex items-center justify-center ml-4">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 hover:bg-red-100"
+              onClick={() => removeService(serviceIndex)}
+            >
+              <Trash2 className="h-8 w-8 text-destructive" />
             </Button>
           </div>
         </div>
-        <div className="ml-6">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 hover:bg-red-100"
-            onClick={() => removeService(serviceIndex)}
-          >
-            <Trash2 className="h-8 w-8 text-destructive" />
-          </Button>
-        </div>
+      </div>
+      <div className="space-y-2 flex-1 w-[50%] mt-4">
+        <h4 className="text-sm font-medium text-primary">Peças Utilizadas</h4>
+        {partFields.map((partField, partIndex) => (
+          <div key={partField.id} className="grid gap-2 grid-cols-7 items-baseline">
+            <FormField
+              name={`services.${serviceIndex}.parts.${partIndex}.partId`}
+              control={control}
+              render={({ field }) => (
+                <FormItem className="col-span-4">
+                  <FormControl>
+                    <SelectInput options={partOptions} placeholder="Selecione uma peça" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex col-span-2">
+              <FormField
+                name={`services.${serviceIndex}.parts.${partIndex}.quantityUsed`}
+                control={control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="number" placeholder="Qtd." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                className="h-10 w-10 bg-red-300/30 ml-2 "
+                size="icon"
+                onClick={() => removePart(partIndex)}
+              >
+                <Delete className="text-red-500" />
+              </Button>
+            </div>
+          </div>
+        ))}
+        <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => appendPart({ partId: "", quantityUsed: 1 })}>
+          <Plus strokeWidth={3} className="mr-2 h-4 w-4" /> Adicionar Peça
+        </Button>
       </div>
     </div>
   );

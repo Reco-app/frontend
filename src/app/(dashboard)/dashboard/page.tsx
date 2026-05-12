@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatCard } from "@/components/StatCard";
-import { TrendingUp, BanknoteArrowUp, Clock, Users, TrendingDown, Package, ChartNoAxesColumnIncreasing, ChartPie } from "lucide-react";
+import { TrendingUp, BanknoteArrowUp, Users, TrendingDown, Package, ChartNoAxesColumnIncreasing, ChartPie } from "lucide-react";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { DashboardPeriod, dashboardPeriodLabels } from "@/types/dashboard";
 import { SelectInput } from "@/components/SelectInput";
@@ -11,27 +11,23 @@ import { RevenueExpenseChart } from "./_components/RevenueExpenseChart";
 import { ExpensesPieChart } from "./_components/ExpensesPieChart";
 import { RecentServiceOrdersCard } from "./_components/RecentServiceOrdersCard";
 import { TopUsedPartsCard } from "./_components/TopUsedParts";
+import ErrorPage from "@/components/ErrorPage";
 
 export default function DashboardPage() {
-  const { dashboardData, isLoading, isError, currentPeriod, changePeriod } = useDashboard();
+  const { dashboardData, isLoading, isError, currentPeriod, changePeriod, refetch } = useDashboard();
 
-  if (isError)
-    return (
-      <div className="container mx-auto py-10 text-center text-destructive">
-        Erro ao carregar os dados do dashboard. Tente recarregar a página.
-      </div>
-    );
+  if (isError) {
+    <ErrorPage onRetry={refetch} />;
+  }
 
   const generalData = dashboardData?.general;
   const financialData = dashboardData?.financial;
   const operationalData = dashboardData?.operational;
 
-  console.log(dashboardData);
-
   return (
     <div className="container mx-auto py-10 space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
+        <div className="mb-4">
           <h1 className="text-2xl font-bold text-primary">Painel de dados</h1>
           <p className="text-muted-foreground">Visão geral do seu negócio</p>
         </div>
@@ -50,7 +46,7 @@ export default function DashboardPage() {
           value={financialData?.totalRevenue ?? 0}
           isLoading={isLoading}
           isMonetary
-          icon={<BanknoteArrowUp className="text-muted-foreground h-5" />}
+          icon={<BanknoteArrowUp className="text-muted-foreground/50 h-5" />}
           growthData={generalData?.revenueChange}
           description={`Nos ${dashboardPeriodLabels[currentPeriod].toLowerCase()}`}
         />
@@ -60,9 +56,9 @@ export default function DashboardPage() {
           isLoading={isLoading}
           icon={
             financialData && financialData.netProfit < 0 ? (
-              <TrendingDown className="text-muted-foreground h-5" />
+              <TrendingDown className="text-muted-foreground/50 h-5" />
             ) : (
-              <TrendingUp className="text-muted-foreground h-5" />
+              <TrendingUp className="text-muted-foreground/50 h-5" />
             )
           }
           isMonetary
@@ -74,7 +70,7 @@ export default function DashboardPage() {
           title="Total de clientes"
           value={generalData?.totalClients ?? 0}
           isLoading={isLoading}
-          icon={<Users className="text-muted-foreground h-5" />}
+          icon={<Users className="text-muted-foreground/50 h-5" />}
           growthData={generalData?.newClientsChange}
           description={`No total`}
         />
@@ -82,7 +78,7 @@ export default function DashboardPage() {
           title="Estoque Crítico"
           value={operationalData?.lowStockAlert?.count ?? 0}
           isLoading={isLoading}
-          icon={<Package className="text-muted-foreground h-5" />}
+          icon={<Package className="text-muted-foreground/50 h-5" />}
           description="Com estoque baixo"
           valueClass={(operationalData?.lowStockAlert?.count ?? 0) > 0 ? "text-destructive" : ""}
         />
@@ -95,7 +91,7 @@ export default function DashboardPage() {
                 <ChartNoAxesColumnIncreasing className="h-4 w-4 mr-2" />
                 Receitas x Despesas
               </CardTitle>
-              <CardDescription>Gráfico comparativo entre receitas e despesas no período informado.</CardDescription>
+              <CardDescription>Gráfico comparativo entre receitas e despesas no período informado</CardDescription>
             </CardHeader>
             <CardContent className="h-60 flex items-center justify-center text-muted-foreground">
               <RevenueExpenseChart data={financialData?.revenueExpenseChartData ?? []} />
@@ -109,7 +105,7 @@ export default function DashboardPage() {
                 <ChartPie className="h-4 w-4 mr-2" />
                 Despesas por categoria
               </CardTitle>
-              <CardDescription>Gráfico das categorias de despesa no período informado.</CardDescription>
+              <CardDescription>Gráfico das categorias de despesa no período informado</CardDescription>
             </CardHeader>
             <CardContent className="h-60 flex items-center justify-center text-muted-foreground">
               <ExpensesPieChart data={financialData?.expensesByCategory ?? []} />

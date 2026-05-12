@@ -7,10 +7,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, CalendarFold, Car, CarFront, Factory, FileText, IdCard, Phone, Plus, User } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Spinner from "@/components/Spinner";
-import { formatDate } from "@/lib/formatters";
+import { formatDate, formatPhone } from "@/lib/formatters";
 import { Accordion } from "@/components/ui/accordion";
 import { Vehicle } from "@/types/vehicle";
 import ServiceOrderItem from "@/components/ServiceOrderItem";
+import { DetailsCard, DetailsCardFieldData } from "@/components/DetailsCard";
+import { DetailsHeader } from "@/components/DetailsHeader";
+import VehicleLoadingPage from "../_components/VehicleLoadingPage";
+import ErrorPage from "@/components/ErrorPage";
 
 const fetchVehicleById = async (id: string): Promise<Vehicle> => {
   const { data } = await api.get(`/vehicles/${id}`);
@@ -27,85 +31,63 @@ export default function VehicleDetailPage() {
     data: vehicle,
     isLoading,
     isError,
+    refetch,
   } = useQuery<Vehicle>({
     queryKey: ["vehicle", vehicleId],
     queryFn: () => fetchVehicleById(vehicleId),
     enabled: !!vehicleId,
   });
 
-  if (isLoading) return <Spinner />;
-  if (isError) return <div>Erro ao buscar dados do cliente.</div>;
+  const detailsCardFields: DetailsCardFieldData[] = [
+    {
+      label: "Nome do funcionário",
+      value: vehicle?.owner.name ?? "Não informado",
+      icon: <User className="text-muted-foreground h-4 w-4" />,
+    },
+    {
+      label: "Telefone do proprietário",
+      value: vehicle?.owner.phone ? formatPhone(vehicle.owner.phone) : "Não informado",
+      icon: <Phone className="text-muted-foreground h-4 w-4" />,
+    },
+    {
+      label: "Placa",
+      value: vehicle?.plate || "Não informado",
+      icon: <IdCard className="text-muted-foreground h-4 w-4" />,
+    },
+    {
+      label: "Marca",
+      value: vehicle?.carBrand ?? "Não informado",
+      icon: <CarFront className="text-muted-foreground h-4 w-4" />,
+    },
+    {
+      label: "Modelo",
+      value: vehicle?.carModel ?? "Não informado",
+      icon: <Car className="text-muted-foreground max-h-4 min-h-4 max-w-4 min-w-4" />,
+    },
+    {
+      label: "Cadastro",
+      value: vehicle?.updatedAt
+        ? `Atualizado em ${formatDate(vehicle!.updatedAt!.toString() ?? formatDate(new Date().toString()))}`
+        : "Não informado",
+      icon: <CalendarFold className="text-muted-foreground h-4 w-4" />,
+    },
+  ];
+
+  if (isLoading) return <VehicleLoadingPage />;
+  if (isError) return <ErrorPage onRetry={refetch} />;
 
   return (
     <div className="container mx-auto max-w-6xl p-6">
-      <div className="flex items-center gap-4 mb-8">
-        <Button variant="ghost" size="icon" onClick={() => router.back()}>
-          <ArrowLeft className="h-8 w-8" />
-        </Button>
-        <div>
-          <h1 className="text-primary mb-1 text-2xl font-bold">Veículo #{vehicle?.plate}</h1>
-          <p className="text-muted-foreground">Detalhes e histórico do veículo</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-6">
+      <DetailsHeader title={`Veículo #${vehicle?.plate}`} description="Detalhes e histórico do veículo" />
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-primary">
-                <CarFront className="h-5 w-5" />
-                Informações do veículo
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-3">
-                <User className="text-muted-foreground max-h-4 min-h-4 max-w-4 min-w-4" />
-                <div>
-                  <p className="text-primary text-sm font-medium">Proprietário</p>
-                  <p className="text-muted-foreground text-sm">{vehicle?.owner.name}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="text-muted-foreground max-h-4 min-h-4 max-w-4 min-w-4" />
-                <div>
-                  <p className="text-primary text-sm font-medium">Telefone do proprietário</p>
-                  <p className="text-muted-foreground text-sm">{vehicle?.owner.phone}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <IdCard className="text-muted-foreground h-4 w-4" />
-                <div>
-                  <p className="text-primary text-sm font-medium">Placa</p>
-                  <p className="text-muted-foreground text-sm">{vehicle?.plate}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Factory className="text-muted-foreground h-4 w-4" />
-                <div>
-                  <p className="text-primary text-sm font-medium">Marca</p>
-                  <p className="text-muted-foreground text-sm">{vehicle?.carBrand}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Car className="text-muted-foreground h-4 w-4" />
-                <div>
-                  <p className="text-primary text-sm font-medium">Modelo</p>
-                  <p className="text-muted-foreground text-sm">{vehicle?.carModel}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <CalendarFold className="text-muted-foreground h-4 w-4" />
-                <div>
-                  <p className="text-primary text-sm font-medium">Cadastro</p>
-                  <p className="text-muted-foreground text-sm">{`Atualizado em: ${formatDate(vehicle!.updatedAt.toString())}`}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <DetailsCard
+            headerTitle="Informações do veículo"
+            headerIcon={<Car className="h-5 w-5 text-muted-foreground" />}
+            fields={detailsCardFields}
+          />
         </div>
-
-        <div>
+        <div className="lg:col-span-2">
           <Card>
             <CardHeader className="flex items-center justify-between text-primary">
               <CardTitle className="flex items-center gap-2">

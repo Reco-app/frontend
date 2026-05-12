@@ -15,6 +15,7 @@ export const useParts = () => {
     data: parts,
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: PARTS_QUERY_KEY,
     queryFn: partService.getAll,
@@ -58,5 +59,5 @@ export const useParts = () => {
     onError: showError,
   });
 
-  return { parts, isLoading, isError, stockSummary, createMutation, updateMutation, deleteMutation };
+  return { parts, isLoading, isError, refetch, stockSummary, createMutation, updateMutation, deleteMutation };
 };

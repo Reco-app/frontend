@@ -1,37 +1,22 @@
 "use client";
 
-import {
-  Car,
-  Database,
-  FileText,
-  Home,
-  Package,
-  Users,
-  IdCardLanyard,
-  Wrench,
-  BanknoteArrowDown,
-  LayoutDashboard,
-  PanelRightClose,
-} from "lucide-react";
+import { Car, Package, Users, IdCardLanyard, Wrench, BanknoteArrowDown, LayoutDashboard } from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useAuthStore } from "@/stores/auth.store";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { Button } from "./ui/button";
 import Image from "next/image";
 
 import logo from "../../public/logo.svg";
@@ -73,20 +58,9 @@ const items = [
     url: "/expenses",
     icon: BanknoteArrowDown,
   },
-  {
-    title: "Financeiro",
-    url: "/finance",
-    icon: FileText,
-  },
-  {
-    title: "Backup",
-    url: "/backup",
-    icon: Database,
-  },
 ];
 
 export function AppSidebar() {
-  const { user } = useAuthStore();
   const pathname = usePathname();
   const { open } = useSidebar();
 
@@ -113,7 +87,7 @@ export function AppSidebar() {
                         href={item.url}
                         className={cn(
                           "text-muted-foreground h-8 py-5 hover:text-red-400 font-medium",
-                          isActive && "bg-primary/5 text-blue-900 font-semibold"
+                          isActive && "bg-primary/5 text-blue-900 font-semibold",
                         )}
                       >
                         <item.icon />

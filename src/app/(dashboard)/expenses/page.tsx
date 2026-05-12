@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatCurrency, formatDate } from "@/lib/formatters";
+import { formatCurrency } from "@/lib/formatters";
 
 import { useExpenses } from "@/hooks/use-expenses";
 import { useBills } from "@/hooks/use-bills";
@@ -10,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExpensesTable } from "./_components/ExpensesTable";
 import { BillsTable } from "./_components/BillsTable";
 import { BillsCalendar } from "./_components/BillsCalendar";
-import { BanknoteArrowDown, BanknoteArrowUp, CalendarSync, ReceiptText, TriangleAlert } from "lucide-react";
+import { BanknoteArrowDown, CalendarSync, ReceiptText, TriangleAlert } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { cn } from "@/lib/utils";
 
@@ -36,11 +35,23 @@ export default function ExpensesAndBillsPage() {
       )}
 
       <Tabs defaultValue="expenses">
-        <TabsList className="grid w-full grid-cols-3 mb-8">
-          <TabsTrigger value="expenses">Despesas</TabsTrigger>
-          <TabsTrigger value="bills">Boletos</TabsTrigger>
-          <TabsTrigger value="calendar">Calendário</TabsTrigger>
-        </TabsList>
+        <div className="flex justify-between w-[100%] mb-6 items-center">
+          <div>
+            <h1 className="text-primary text-xl font-bold">Gerenciamento de despesas</h1>
+            <p className="text-muted-foreground">Cadastre e monitore despesas</p>
+          </div>
+          <TabsList className="grid w-[50%] grid-cols-3 p-1 h-fit">
+            <TabsTrigger value="expenses" className="h-8 hover:cursor-pointer">
+              Despesas
+            </TabsTrigger>
+            <TabsTrigger value="bills" className="hover:cursor-pointer">
+              Boletos
+            </TabsTrigger>
+            <TabsTrigger value="calendar" className="hover:cursor-pointer">
+              Calendário
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="expenses" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-3">

@@ -17,15 +17,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { CheckCircle } from "lucide-react";
 import { DataTable } from "@/components/DataTable";
 import { useBills } from "@/hooks/use-bills";
 import { BillForm } from "./BillsForm";
 import Spinner from "@/components/Spinner";
+import { CheckCircle } from "lucide-react";
 
 const calculatedStatusMap: Record<BillStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   PENDING: { label: "Pendente", variant: "outline" },
-  PAID: { label: "Pago", variant: "secondary" },
+  PAID: { label: "Pago", variant: "outline" },
   OVERDUE: { label: "Vencido", variant: "destructive" },
 };
 
@@ -54,38 +54,6 @@ export function BillsTable() {
   };
 
   const columns: ColumnDef<Bill>[] = [
-    {
-      accessorKey: "description",
-      header: "Descrição",
-    },
-    {
-      accessorKey: "supplier",
-      header: "Fornecedor",
-      cell: ({ row }) => row.getValue("supplier") || "-",
-    },
-    {
-      accessorKey: "value",
-      header: "Valor",
-      cell: ({ row }) => formatCurrency(row.getValue("value")),
-    },
-    {
-      accessorKey: "dueDate",
-      header: "Vencimento",
-      cell: ({ row }) => formatDate(row.getValue("dueDate")),
-    },
-    {
-      accessorKey: "calculatedStatus",
-      header: "Status",
-      cell: ({ row }) => {
-        const status = row.getValue("calculatedStatus") as BillStatus;
-        const { label, variant } = calculatedStatusMap[status] || { label: status, variant: "default" };
-        return (
-          <Badge variant={variant} className="capitalize">
-            {label}
-          </Badge>
-        );
-      },
-    },
     {
       id: "customActions",
       cell: ({ row }) => {
@@ -121,6 +89,38 @@ export function BillsTable() {
         );
       },
     },
+    {
+      accessorKey: "description",
+      header: "Nome",
+    },
+    {
+      accessorKey: "supplier",
+      header: "Fornecedor",
+      cell: ({ row }) => row.getValue("supplier") || "-",
+    },
+    {
+      accessorKey: "value",
+      header: "Valor",
+      cell: ({ row }) => formatCurrency(row.getValue("value")),
+    },
+    {
+      accessorKey: "dueDate",
+      header: "Vencimento",
+      cell: ({ row }) => formatDate(row.getValue("dueDate")),
+    },
+    {
+      accessorKey: "calculatedStatus",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = row.getValue("calculatedStatus") as BillStatus;
+        const { label, variant } = calculatedStatusMap[status] || { label: status, variant: "default" };
+        return (
+          <Badge variant={variant} className="capitalize">
+            {label}
+          </Badge>
+        );
+      },
+    },
   ];
 
   return (
@@ -130,7 +130,7 @@ export function BillsTable() {
         data={bills ?? []}
         isLoading={isLoading}
         filterColumnId="description"
-        filterPlaceholder="Filtrar por descrição..."
+        filterPlaceholder="Filtrar por nome"
         createText="Novo Boleto"
         FormComponent={BillForm}
         actions={false}
