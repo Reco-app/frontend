@@ -39,7 +39,7 @@ const FloatingInput = React.forwardRef<HTMLInputElement, FloatingInputProps>(({ 
           className={cn(
             "absolute left-3 top-1/2 -translate-y-1/2 cursor-text px-1 transition-all duration-200 ease-in-out bg-none text-muted-foreground",
             "peer-focus:top-0 peer-focus:text-xs peer-focus:text-primary peer-focus:bg-white",
-            "peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs",
+            "peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:bg-white  peer-[:not(:placeholder-shown)]:text-xs",
             error && "peer-focus:text-destructive text-destructive peer:focus:bg-white",
             "pointer-events-none",
           )}
@@ -51,7 +51,7 @@ const FloatingInput = React.forwardRef<HTMLInputElement, FloatingInputProps>(({ 
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground/70 hover:text-foreground transition-colors"
             aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
           >
             {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}

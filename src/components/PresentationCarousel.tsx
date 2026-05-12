@@ -17,7 +17,7 @@ interface PresentationCarouselItemProps {
 export function PresentationCarouselItem({ image, title, description }: PresentationCarouselItemProps) {
   return (
     <CarouselItem className="flex flex-col items-center justify-center space-y-4 p-6 text-center">
-      <Image src={image} alt={title} width={700} height={400} className="rounded-md" />
+      <Image src={image} alt={title} width={640} className="rounded-md" />
       <div className="text-white my-6">
         <h3 className="mb-4 text-xl font-semibold">{title}</h3>
         <p className="text-md opacity-80">{description}</p>
@@ -30,27 +30,27 @@ export function PresentationCarousel() {
   const items = [
     {
       image: serviceOrder,
-      title: "Serviços",
+      title: "Ordens de serviço",
       description: "Gerencie ordens de serviço do início ao fim com mais organização, agilidade e praticidade.",
     },
     {
       image: stats,
-      title: "Estatísticas",
+      title: "Dashboards interativos",
       description: "Visualize relatórios detalhados e acompanhe o desempenho da oficina em tempo real.",
     },
     {
       image: box,
-      title: "Estoque",
+      title: "Controle de estoque",
       description: "Controle a entrada e saída de peças com precisão, evitando perdas e falta de insumos.",
     },
     {
       image: employee,
-      title: "Pessoas",
-      description: "Centralize informações de clientes e veículos e organize sua equipe em um só lugar.",
+      title: "Gerenciamento de pessoas",
+      description: "Centralize informações de clientes, veículos e organize sua equipe em um só lugar.",
     },
     {
       image: finance,
-      title: "Financeiro",
+      title: "Controle financeiro",
       description: "Monitore receitas, pagamentos e despesas mantendo as finanças sempre sob controle.",
     },
   ];
