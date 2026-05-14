@@ -99,6 +99,7 @@ export function VehicleForm({ initialData, onSubmit, isPending }: VehicleFormPro
                     options={customerOptions}
                     value={field.value}
                     onChange={field.onChange}
+                    className="rounded-md bg-accent"
                   />
                 </FormControl>
                 <FormMessage />
@@ -135,6 +136,7 @@ export function VehicleForm({ initialData, onSubmit, isPending }: VehicleFormPro
                         options={brandOptions}
                         value={field.value}
                         onChange={field.onChange}
+                        className="rounded-md bg-accent"
                       />
                     </FormControl>
                     <FormMessage />
@@ -157,6 +159,7 @@ export function VehicleForm({ initialData, onSubmit, isPending }: VehicleFormPro
                         value={field.value}
                         onChange={field.onChange}
                         disabled={!watchedBrand}
+                        className="rounded-md bg-accent"
                       />
                     </FormControl>
                     <FormMessage />

@@ -113,7 +113,7 @@ export function DataTable<TData>({
         : []),
       ...columns,
     ],
-    [columns, viewDetailsRoute, router, onEdit, actions, deleteMutation]
+    [columns, viewDetailsRoute, router, onEdit, actions, deleteMutation],
   );
 
   const table = useReactTable({
@@ -194,7 +194,13 @@ export function DataTable<TData>({
                 <TableRow
                   key={(row.original as any).id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={viewDetailsRoute ? () => router.push(`${viewDetailsRoute}/${(row.original as any).id}`) : () => {}}
+                  onClick={
+                    viewDetailsRoute && (isEditDialogOpen || isDeleteDialogOpen)
+                      ? () => {
+                          router.push(`${viewDetailsRoute}/${(row.original as any).id}`);
+                        }
+                      : () => {}
+                  }
                   className="hover:cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => {
@@ -216,7 +222,7 @@ export function DataTable<TData>({
             ) : (
               <TableRow>
                 <TableCell colSpan={tableColumns.length} className="h-64 text-center text-gray-500">
-                  Nenhum resultado encontrado.
+                  Nenhum resultado encontrado
                 </TableCell>
               </TableRow>
             )}
@@ -241,10 +247,10 @@ export function DataTable<TData>({
 
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
         <DialogOverlay />
-        <DialogContent>
+        <DialogContent className="min-w-max">
           <DialogHeader className="mb-2 text-primary">
             <DialogTitle>Cadastrar {createText.replace("Novo ", "")}</DialogTitle>
-            <DialogDescription>Preencha os campos do formulário abaixo.</DialogDescription>
+            <DialogDescription>Preencha os campos do formulário abaixo</DialogDescription>
           </DialogHeader>
           <FormComponent
             isPending={createMutation.isPending}
@@ -258,7 +264,7 @@ export function DataTable<TData>({
         <DialogContent>
           <DialogHeader className="mb-2">
             <DialogTitle>Editar {createText.replace("Novo ", "")}</DialogTitle>
-            <DialogDescription>Altere os campos desejados no formulário abaixo.</DialogDescription>
+            <DialogDescription>Altere os campos desejados no formulário abaixo</DialogDescription>
           </DialogHeader>
           <FormComponent
             initialData={selectedData}

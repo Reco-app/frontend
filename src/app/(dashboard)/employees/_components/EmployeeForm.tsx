@@ -32,7 +32,7 @@ const formSchema = z.object({
       z
         .number({ error: isRequiredFieldMessage })
         .min(0, { message: shouldBePositiveNumberMessage })
-        .max(10000, { message: "Salário inválido" })
+        .max(10000, { message: "Salário inválido" }),
     ),
   role: z.string(isRequiredFieldMessage),
 });
@@ -155,9 +155,11 @@ export function EmployeeForm({ initialData, onSubmit, isPending }: EmployeeFormP
                     value={field.value}
                     onChange={field.onChange}
                     options={roleOptions}
+                    isSearchable={false}
                     placeholder="Selecione um cargo"
                     searchPlaceholder="Buscar cargo..."
                     emptyMessage="Nenhum cargo encontrado."
+                    className="rounded-md bg-accent"
                   />
                 </FormControl>
                 <FormMessage />

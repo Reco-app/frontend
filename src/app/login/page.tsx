@@ -107,7 +107,11 @@ export default function LoginPage() {
                       <span className="text-primary text-sm font-medium">Esqueceu sua senha?</span>
                     </Button>
                   </div>
-                  <Button type="submit" className="py-5 rounded-xl font-bold w-full" disabled={mutation.isPending}>
+                  <Button
+                    type="submit"
+                    className="py-5 rounded-4xl font-bold w-full opacity-95 bg-gradient-to-r from-blue-600 via-blue-800 to-blue-900 hover:opacity-100"
+                    disabled={mutation.isPending}
+                  >
                     {mutation.isPending ? <Spinner /> : "Entrar"}
                   </Button>
                 </form>

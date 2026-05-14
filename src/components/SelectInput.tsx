@@ -19,17 +19,21 @@ interface SelectInputProps {
   placeholder?: string;
   searchPlaceholder?: string;
   emptyMessage?: string;
+  isSearchable?: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 export function SelectInput({
   options,
   value,
   onChange,
+  isSearchable = true,
   placeholder = "Selecione uma opção",
   searchPlaceholder = "Buscar...",
-  emptyMessage = "Nenhum resultado encontrado.",
+  emptyMessage = "Nenhum resultado encontrado",
   disabled = false,
+  className,
 }: SelectInputProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -48,6 +52,7 @@ export function SelectInput({
             "focus-visible:ring-secondary/70 focus-visible:ring-2",
             "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
             !value && "text-foreground",
+            className,
           )}
         >
           <span className={`${value ? "text-foreground" : "text-muted-foreground"} font-normal pr-2`}>
@@ -58,7 +63,7 @@ export function SelectInput({
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
         <Command>
-          <CommandInput placeholder={searchPlaceholder} />
+          {isSearchable && <CommandInput placeholder={searchPlaceholder} />}
           <CommandList>
             <CommandEmpty>
               <span className="text-gray-500">{emptyMessage}</span>

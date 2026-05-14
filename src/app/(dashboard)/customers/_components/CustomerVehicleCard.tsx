@@ -12,19 +12,19 @@ export function CustomerVehicleCard({ vehicle }: CustomerVehicleCard) {
       <CardContent className="p-4">
         <div className="mb-2 flex items-start justify-between">
           <h4 className="text-primary font-bold text-sm flex flex-col">
-            <span className="text-primary/60">{vehicle.carBrand}</span>
+            <span className="text-primary/60 mb-2">{vehicle.carBrand}</span>
             <span>{vehicle.carModel}</span>
           </h4>
-          <Badge variant="outline" className="text-primary">
-            {vehicle.year}
-          </Badge>
         </div>
         <div className="text-muted-foreground space-y-1 text-sm">
           <p>
             <span className="font-semibold">Placa:</span> {vehicle.plate}
           </p>
           <p>
-            <span className="font-semibold">Cor:</span> {vehicle.color || "Não informada."}
+            <span className="font-semibold">Cor:</span> {vehicle.color || "Não informada"}
+          </p>
+          <p>
+            <span className="font-semibold">Ano:</span> {vehicle.year || "Não informado"}
           </p>
         </div>
       </CardContent>

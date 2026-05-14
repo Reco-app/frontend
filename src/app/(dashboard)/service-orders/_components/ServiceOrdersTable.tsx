@@ -33,7 +33,7 @@ export function ServiceOrdersTable() {
     },
     {
       accessorKey: "entryDate",
-      header: "Data de Entrada",
+      header: "Entrada em",
       cell: ({ row }) => formatDate(row.getValue("entryDate")),
     },
     {

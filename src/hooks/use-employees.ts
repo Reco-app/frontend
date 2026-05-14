@@ -7,7 +7,7 @@ import { StatsPeriod } from "@/types/service-order";
 const EMPLOYEES_QUERY_KEY = ["employees"];
 
 const showError = (err: any) => {
-  toast.error(`Erro! ${err.message}`);
+  toast.error(`Erro: ${err.response?.data?.message}`);
 };
 
 const DASHBOARD_KEY = ["employee-stats"];

@@ -142,7 +142,7 @@ export default function CustomerDetailPage() {
               {customer?.vehicles?.length === 0 ? (
                 <p className="text-muted-foreground py-8 text-center">Nenhum veículo cadastrado para este cliente.</p>
               ) : (
-                <div className="md:grid-cols-2 grid max-h-[400px] grid-cols-2 gap-4 overflow-y-scroll">
+                <div className="md:grid-cols-2 grid max-h-[300px] grid-cols-2 gap-4 pr-4 overflow-y-scroll">
                   {customer?.vehicles?.map((vehicle) => (
                     <CustomerVehicleCard key={vehicle.id} vehicle={vehicle} />
                   ))}
@@ -162,7 +162,7 @@ export default function CustomerDetailPage() {
               </Button>
             </CardHeader>
             <CardContent>
-              <div className="max-h-[400px] overflow-y-scroll">
+              <div className="max-h-[300px] overflow-y-scroll">
                 {customer?.serviceOrders.length === 0 ? (
                   <p className="text-muted-foreground text-center py-8">Nenhuma ordem de serviço encontrada para este cliente.</p>
                 ) : (

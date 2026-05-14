@@ -23,7 +23,7 @@ export function ServiceOrderStatsList({ title, data, isLoading, icon }: any) {
           </div>
         )}
 
-        {data && data.length === 0 && <p className="text-sm text-muted-foreground">Nenhum dado no período.</p>}
+        {data && data.length === 0 && <p className="text-sm text-muted-foreground">Nenhum dado no período</p>}
         {data && data.length > 0 && (
           <ul className="space-y-2.5 text-muted-foreground -mt-1">
             {data.map((item: any) => (

@@ -11,6 +11,7 @@ import { useParts } from "@/hooks/use-parts";
 import Spinner from "@/components/Spinner";
 import { SelectInput } from "@/components/SelectInput";
 import { InventoryMovement } from "@/types/inventory";
+import { Badge } from "@/components/ui/badge";
 
 const formSchema = z.object({
   partId: z.string("Selecione uma peça."),
@@ -70,6 +71,7 @@ export function StockMovementForm({ initialData, isPending, onSubmit }: StockMov
                   options={partOptions}
                   value={field.value}
                   onChange={field.onChange}
+                  className="rounded-md bg-accent"
                 />
               </FormControl>
               <FormMessage />
@@ -94,6 +96,7 @@ export function StockMovementForm({ initialData, isPending, onSubmit }: StockMov
                   ]}
                   value={field.value}
                   onChange={field.onChange}
+                  className="bg-accent rounded-md"
                 />
                 <FormMessage />
               </FormItem>
@@ -120,7 +123,9 @@ export function StockMovementForm({ initialData, isPending, onSubmit }: StockMov
           name="reason"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Motivo (Opcional)</FormLabel>
+              <FormLabel>
+                Motivo <Badge variant="outline">Opcional</Badge>
+              </FormLabel>
               <FormControl>
                 <Input placeholder="Ex: Compra do fornecedor X" {...field} />
               </FormControl>

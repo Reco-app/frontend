@@ -36,8 +36,8 @@ export function MostUsedParts() {
         {error && <p className="text-destructive">Erro ao carregar dados.</p>}
         {data && data.length === 0 && (
           <div className="flex flex-col items-center justify-center h-40 text-muted-foreground">
-            <Package className="w-8 h-8 mb-2" />
-            <p>Nenhuma peça foi utilizada neste período.</p>
+            <Package className="w-6 h-6 mb-2" />
+            <p className="text-sm">Nenhuma peça foi utilizada neste período</p>
           </div>
         )}
         {data && data.length > 0 && (

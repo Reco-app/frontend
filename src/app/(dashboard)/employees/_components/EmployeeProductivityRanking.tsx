@@ -66,7 +66,7 @@ export function EmployeeProductivityRanking() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground text-center py-10">Nenhum serviço realizado no período selecionado.</p>
+          <p className="text-sm text-muted-foreground text-center py-10">Nenhum serviço realizado no período selecionado</p>
         )}
       </CardContent>
     </Card>

@@ -65,13 +65,13 @@ export function AppSidebar() {
   const { open } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon" variant="floating">
-      <SidebarContent className="bg-accent">
+    <Sidebar collapsible="icon" variant="floating" className="rounded-4xl">
+      <SidebarContent className="bg-primary rounded-lg">
         <div className={cn("flex items-center m-1", open ? "justify-between" : "justify-center")}>
           {open ? (
-            <Image src={logo} alt="Reco.app" className="ml-2" height={80} width={80} />
+            <Image src={logo} alt="Reco.app" className="ml-2 invert brightness-0" height={80} width={80} />
           ) : (
-            <Image src={logoWithoutText} alt="Reco.app" height={30} width={30} />
+            <Image src={logoWithoutText} alt="Reco.app" className="invert brightness-0 mt-2" height={30} width={30} />
           )}
         </div>
 
@@ -85,13 +85,10 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <Link
                         href={item.url}
-                        className={cn(
-                          "text-muted-foreground h-8 py-5 hover:text-red-400 font-medium",
-                          isActive && "bg-primary/5 text-blue-900 font-semibold",
-                        )}
+                        className={cn("text-muted-foreground h-8 py-5 font-medium", isActive && "bg-white/20 text-white font-semibold")}
                       >
-                        <item.icon />
-                        <span>{item.title}</span>
+                        <item.icon className="text-white/80" />
+                        <span className="text-white/80 font-medium">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -102,7 +99,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarTrigger
-        className={cn("absolute z-50 transition-all", open ? "right-4 top-8" : "right-0 top-8 bg-accent hover:bg-accent translate-x-1/2")}
+        className={cn("absolute z-50 transition-all text-white", open ? "right-4 top-8" : "right-2.5 top-13 bg-primary translate-x-1/2")}
       />
     </Sidebar>
   );

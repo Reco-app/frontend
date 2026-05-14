@@ -17,7 +17,7 @@ interface ExpensesPieChartProps {
 export function ExpensesPieChart({ data, isLoading }: ExpensesPieChartProps) {
   const totalExpenses = React.useMemo(() => data.reduce((sum, item) => sum + item.total, 0), [data]);
 
-  if (data.length === 0) return <span>Nenhuma despesa cadastrada no período</span>;
+  if (data.length === 0) return <span className="text-sm">Nenhuma despesa cadastrada no período</span>;
 
   if (isLoading) return <Skeleton className="h-60 w-full rounded-full" />;
 

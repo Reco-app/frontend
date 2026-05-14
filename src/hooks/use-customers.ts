@@ -1,11 +1,12 @@
 import { customerService } from "@/services/customer.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { toast } from "sonner";
 
 const CUSTOMERS_QUERY_KEY = ["customers"];
 
 const showError = (err: any) => {
-  toast.error(`Erro! ${err.message}`);
+  toast.error(`Erro: ${err.response?.data?.message}`);
 };
 
 export const useCustomer = () => {

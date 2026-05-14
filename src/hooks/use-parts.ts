@@ -5,7 +5,7 @@ import { partService } from "@/services/part.service";
 const PARTS_QUERY_KEY = ["parts"];
 
 const showError = (err: any) => {
-  toast.error(`Erro! ${err.message}`);
+  toast.error(`Erro: ${err.response?.data?.message}`);
 };
 
 export const useParts = () => {

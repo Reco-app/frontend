@@ -24,6 +24,10 @@ export default function DashboardPage() {
   const financialData = dashboardData?.financial;
   const operationalData = dashboardData?.operational;
 
+  const formatDescription = (period: DashboardPeriod) => {
+    return `${period === DashboardPeriod.ALL_TIME ? "Em" : period === DashboardPeriod.LAST_YEAR ? "No" : "Nos"} ${dashboardPeriodLabels[currentPeriod].toLowerCase()}`;
+  };
+
   return (
     <div className="container mx-auto py-10 space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -33,6 +37,7 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-2">
           <SelectInput
+            isSearchable={false}
             options={Object.entries(dashboardPeriodLabels).map(([key, value]) => ({ label: value, value: key }))}
             value={currentPeriod}
             onChange={(value) => changePeriod(value as DashboardPeriod)}
@@ -48,7 +53,7 @@ export default function DashboardPage() {
           isMonetary
           icon={<BanknoteArrowUp className="text-muted-foreground/50 h-5" />}
           growthData={generalData?.revenueChange}
-          description={`Nos ${dashboardPeriodLabels[currentPeriod].toLowerCase()}`}
+          description={formatDescription(currentPeriod)}
         />
         <StatCard
           title="Lucro Líquido"
@@ -63,7 +68,7 @@ export default function DashboardPage() {
           }
           isMonetary
           growthData={generalData?.netProfitChange}
-          description={`Nos ${dashboardPeriodLabels[currentPeriod].toLowerCase()}`}
+          description={formatDescription(currentPeriod)}
           valueClass={(financialData?.netProfit ?? 0) < 0 ? "text-destructive" : "text-green-600"}
         />
         <StatCard
